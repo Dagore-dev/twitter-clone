@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { FollowingTweets } from "~/components/FollowingTweets";
 import { NewTweetForm } from "~/components/NewTweetForm";
 import { RecentTweets } from "~/components/RecentTweets";
 import { Tabs } from "~/components/Tabs";
@@ -17,7 +18,12 @@ const Home: NextPage = () => {
       </header>
 
       <NewTweetForm />
-      <RecentTweets />
+      
+      {
+        selectedTab === 'Recent'
+        ? <RecentTweets />
+        : <FollowingTweets />
+      }
     </>
   );
 };
