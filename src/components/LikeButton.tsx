@@ -5,9 +5,11 @@ import { IconHoverEffect } from "./IconHoverEffect"
 interface Props {
   likedByMe: boolean
   likeCount: number
+  isLoading: boolean
+  onClick: () => void
 }
 
-export function LikeButton ({ likedByMe, likeCount }: Props) {
+export function LikeButton ({ likedByMe, likeCount, isLoading, onClick }: Props) {
   const session = useSession()
   const HeartIcon = likedByMe ? VscHeartFilled : VscHeart
   
@@ -19,7 +21,9 @@ export function LikeButton ({ likedByMe, likeCount }: Props) {
   }
 
   return (
-    <button 
+    <button
+      disabled={isLoading}
+      onClick={onClick}
       className={`group items-center gap-1 self-start flex transition-colors duration-200 -ml-2
       ${likedByMe ? 'text-red-500' : 'text-gray-500 hover:text-red-500 focus-visible:text-red-500'}`}
     >

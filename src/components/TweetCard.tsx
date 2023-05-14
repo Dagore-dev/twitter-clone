@@ -3,8 +3,11 @@ import type Tweet from "~/interfaces/Tweet"
 import { ProfileImage } from "./ProfileImage"
 import { dateTimeFormatter } from '../utils/dateTimeFormatter'
 import { LikeButton } from "./LikeButton"
+import { api } from "~/utils/api"
 
 export function TweetCard ({ id, content, createdAt, likeCount, likedByMe, user }: Tweet) {
+  const toggleLike = api.tweet.toggleLike.useMutation()
+  
   return (
     <li className="flex gap-4 border-b p-4">
       <Link href={`/profiles/${user.id}`}>
@@ -25,8 +28,12 @@ export function TweetCard ({ id, content, createdAt, likeCount, likedByMe, user 
 
         <p className="whitespace-pre-wrap">{content}</p>
 
-        <LikeButton likedByMe={likedByMe} likeCount={likeCount} />
+        <LikeButton onClick={handleToggleLike} isLoading={toggleLike.isLoading} likedByMe={likedByMe} likeCount={likeCount} />
       </div>
     </li>
   )
+
+  function handleToggleLike () {
+    toggleLike.mutate({ id })
+  }
 }
