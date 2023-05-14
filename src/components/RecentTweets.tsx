@@ -9,7 +9,7 @@ export function RecentTweets () {
       tweets={tweetsQuery.data?.pages.flatMap(page => page.tweets)}
       isError={tweetsQuery.isError}
       isLoading={tweetsQuery.isLoading}
-      hasMore={tweetsQuery.hasNextPage}
+      hasMore={tweetsQuery.hasNextPage ?? false}
       fetchNewTweets={tweetsQuery.fetchNextPage}
     />
   )
