@@ -1,19 +1,21 @@
-import Image from "next/image"
-import { VscAccount } from "react-icons/vsc"
+import Image from "next/image";
+import { VscAccount } from "react-icons/vsc";
 
 interface Props {
-  src?: string | null
-  className?: string
+  src?: string | null;
+  className?: string;
 }
 
-export function ProfileImage ({ src, className = '' }: Props) {
+export function ProfileImage({ src, className = "" }: Props) {
   return (
-    <div className={`relative h-12 w-12 overflow-hidden rounded-full ${className}`}>
-      {
-        src == null
-        ? <VscAccount className="h-full w-full" />
-        : <Image src={src} alt="Profile image" quality={100} fill />
-      }
+    <div
+      className={`relative h-12 w-12 overflow-hidden rounded-full ${className}`}
+    >
+      {src == null ? (
+        <VscAccount className="h-full w-full" />
+      ) : (
+        <Image src={src} alt="Profile image" quality={100} fill />
+      )}
     </div>
-  )
+  );
 }

@@ -1,1 +1,1 @@
-export const TABS = ['Recent', 'Following'] as const
+export const TABS = ["Recent", "Following"] as const;

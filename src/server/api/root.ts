@@ -9,7 +9,7 @@ import { profileRouter } from "./routers/profile";
  */
 export const appRouter = createTRPCRouter({
   tweet: tweetRouter,
-  profile: profileRouter
+  profile: profileRouter,
 });
 
 // export type definition of API

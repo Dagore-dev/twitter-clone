@@ -1,26 +1,26 @@
-import { type Dispatch, type SetStateAction } from "react"
-import { TABS } from "~/utils/TABS"
+import { type Dispatch, type SetStateAction } from "react";
+import { TABS } from "~/utils/TABS";
 
 interface Props {
-  selectedTab: typeof TABS[number]
-  setSelectedTab: Dispatch<SetStateAction<typeof TABS[number]>>
+  selectedTab: (typeof TABS)[number];
+  setSelectedTab: Dispatch<SetStateAction<(typeof TABS)[number]>>;
 }
 
-export function Tabs ({ selectedTab, setSelectedTab }: Props) {
+export function Tabs({ selectedTab, setSelectedTab }: Props) {
   return (
     <div className="flex">
-    {
-      TABS.map(tab => (
+      {TABS.map((tab) => (
         <button
           key={tab}
           onClick={() => setSelectedTab(tab)}
           className={`flex-grow p-2 hover:bg-gray-200 focus-visible:bg-gray-200
-          ${tab === selectedTab ? 'font-bold border-b-4 border-b-blue-500': ''}`}
+          ${
+            tab === selectedTab ? "border-b-4 border-b-blue-500 font-bold" : ""
+          }`}
         >
           {tab}
         </button>
-      ))
-    }
-  </div>
-  )
+      ))}
+    </div>
+  );
 }
