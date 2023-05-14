@@ -11,6 +11,8 @@ export function TweetCard ({ id, content, createdAt, likeCount, likedByMe, user 
   const toggleLike = api.tweet.toggleLike.useMutation({
     onSuccess: ({ addedLike }) => {
       trpcUtils.tweet.infiniteFeed.setInfiniteData({}, oldData => updateData(oldData, addedLike))
+      trpcUtils.tweet.infiniteFeed.setInfiniteData({ onlyFollowing: true }, oldData => updateData(oldData, addedLike))
+      trpcUtils.tweet.infiniteProfileFeed.setInfiniteData({ userId: user.id }, oldData => updateData(oldData, addedLike))
     }
   })
   
