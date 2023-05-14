@@ -4,9 +4,15 @@ import { ProfileImage } from "./ProfileImage"
 import { dateTimeFormatter } from '../utils/dateTimeFormatter'
 import { LikeButton } from "./LikeButton"
 import { api } from "~/utils/api"
+import { type FeedData } from "~/interfaces/FeedData"
 
 export function TweetCard ({ id, content, createdAt, likeCount, likedByMe, user }: Tweet) {
-  const toggleLike = api.tweet.toggleLike.useMutation()
+  const trpcUtils = api.useContext()
+  const toggleLike = api.tweet.toggleLike.useMutation({
+    onSuccess: ({ addedLike }) => {
+      trpcUtils.tweet.infiniteFeed.setInfiniteData({}, oldData => updateData(oldData, addedLike))
+    }
+  })
   
   return (
     <li className="flex gap-4 border-b p-4">
@@ -35,5 +41,30 @@ export function TweetCard ({ id, content, createdAt, likeCount, likedByMe, user 
 
   function handleToggleLike () {
     toggleLike.mutate({ id })
+  }
+
+  function updateData (oldData: FeedData, addedLike: boolean) {
+    if (oldData == null) return
+
+    const countModifier = addedLike ? 1 : -1
+    return {
+      ...oldData,
+      // Updating the tweet likeCount and likedByMe properties and leaving the rest of the data without changes
+      pages: oldData.pages.map(page => {
+        return {
+          ...page,
+          tweets: page.tweets.map(tweet => {
+            if (tweet.id === id) {
+              return {
+                ...tweet,
+                likeCount: likeCount + countModifier,
+                likedByMe: addedLike
+              }
+            }
+            return tweet
+          })
+        }
+      })
+    }
   }
 }
