@@ -17,6 +17,19 @@ const ProfilePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   const tweetsQuery = api.tweet.infiniteProfileFeed.useInfiniteQuery({ userId: id }, {
     getNextPageParam: lastPage => lastPage.nextCursor
   })
+  const trpcUtils = api.useContext()
+  const toggleFollow = api.profile.toggleFollow.useMutation({ onSuccess: ({ addedFollow }) => {
+    trpcUtils.profile.getById.setData({ id }, oldData => {
+      if (oldData == null) return
+
+      const countModifier = addedFollow ? 1 : -1
+      return {
+        ...oldData,
+        isFollowing: addedFollow,
+        followersCount: oldData.followersCount + countModifier
+      }
+    })
+  } })
   
   if (profile == null || profile.name == null) return <ErrorPage statusCode={404} />
 
@@ -48,7 +61,8 @@ const ProfilePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         </div>
         <FollowButton
           userId={id}
-          onClick={() => console.log('click')}
+          onClick={() => toggleFollow.mutate({ userId: id })}
+          isLoading={toggleFollow.isLoading}
           isFollowing={profile.isFollowing}
         />
       </header>
