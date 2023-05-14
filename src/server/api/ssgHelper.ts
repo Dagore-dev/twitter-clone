@@ -7,7 +7,7 @@ export function ssgHelper () {
   return createServerSideHelpers({
     router: appRouter,
     // No user in the server-side, so session equals to null
-    ctx: createInnerTRPCContext({ session: null }),
+    ctx: createInnerTRPCContext({ session: null, revalidateSSG: null }),
     transformer: superjson
   })
 }
