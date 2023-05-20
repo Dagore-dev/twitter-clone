@@ -1,6 +1,7 @@
 export default interface Tweet {
   id: string;
   content: string;
+  imageUrl?: string;
   createdAt: Date;
   likeCount: number;
   likedByMe: boolean;

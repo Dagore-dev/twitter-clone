@@ -1,5 +1,4 @@
 import { useSession } from "next-auth/react";
-import { BsImage } from "react-icons/bs";
 import { Button } from "./Button";
 import { ProfileImage } from "./ProfileImage";
 import {
@@ -70,6 +69,7 @@ function Form() {
   const profileImage = session.data.user.image;
   return (
     <form
+      method="POST"
       onSubmit={handleSubmit}
       className="flex flex-col gap-2 border-b  px-4 py-2"
     >
@@ -88,14 +88,46 @@ function Form() {
       </div>
       <div className="ml-10 flex items-center justify-between pl-10 pt-2">
         <ImageInput className="py-2" />
-        <Button>Tweet</Button>
+        <Button disabled={createTweet.isLoading}>Tweet</Button>
       </div>
     </form>
   );
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    createTweet.mutate({ content: input });
+    const form = e.currentTarget as HTMLFormElement;
+    const fileInput = Array.from(form.elements).find(
+      (control) => (control as HTMLInputElement).name === "img"
+    ) as HTMLInputElement;
+    const files = fileInput?.files;
+    if (files == null) {
+      createTweet.mutate({ content: input });
+      return;
+    }
+
+    const formData = new FormData();
+    for (const file of files) {
+      formData.append("file", file);
+    }
+    formData.append("upload_preset", "tweets_images");
+
+    fetch("https://api.cloudinary.com/v1_1/dmhvmoqu2/image/upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        response
+          .json()
+          .then(({ secure_url }) => {
+            createTweet.mutate({
+              content: input,
+              imageUrl: secure_url as string,
+            });
+            console.log(secure_url);
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch((error) => console.error(error));
   }
 }
 

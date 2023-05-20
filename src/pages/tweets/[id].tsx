@@ -36,6 +36,7 @@ const TweetDetails: NextPage<
       <ul>
         <TweetCard
           content={tweet.content}
+          imageUrl={tweet.imageUrl ?? undefined}
           createdAt={tweet.createdAt}
           id={tweet.id}
           likeCount={tweet.likeCount}

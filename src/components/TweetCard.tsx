@@ -9,6 +9,7 @@ import { type FeedData } from "~/interfaces/FeedData";
 export function TweetCard({
   id,
   content,
+  imageUrl,
   createdAt,
   likeCount,
   likedByMe,
@@ -55,7 +56,9 @@ export function TweetCard({
         <div>
           {isDetail ? (
             <>
-              <p className="whitespace-pre-wrap">{content}</p>
+              <p className="whitespace-pre-wrap">
+                {content} - {imageUrl}
+              </p>
 
               <LikeButton
                 onClick={handleToggleLike}
@@ -66,7 +69,9 @@ export function TweetCard({
             </>
           ) : (
             <Link href={`/tweets/${id}`}>
-              <p className="whitespace-pre-wrap">{content}</p>
+              <p className="whitespace-pre-wrap">
+                {content} - {imageUrl}
+              </p>
 
               <LikeButton
                 onClick={handleToggleLike}
