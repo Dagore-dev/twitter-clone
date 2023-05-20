@@ -13,7 +13,8 @@ export function TweetCard({
   likeCount,
   likedByMe,
   user,
-}: Tweet) {
+  isDetail,
+}: Tweet & { isDetail?: boolean }) {
   const trpcUtils = api.useContext();
   const toggleLike = api.tweet.toggleLike.useMutation({
     onSuccess: ({ addedLike }) => {
@@ -51,14 +52,31 @@ export function TweetCard({
           </span>
         </div>
 
-        <p className="whitespace-pre-wrap">{content}</p>
+        <div>
+          {isDetail ? (
+            <>
+              <p className="whitespace-pre-wrap">{content}</p>
 
-        <LikeButton
-          onClick={handleToggleLike}
-          isLoading={toggleLike.isLoading}
-          likedByMe={likedByMe}
-          likeCount={likeCount}
-        />
+              <LikeButton
+                onClick={handleToggleLike}
+                isLoading={toggleLike.isLoading}
+                likedByMe={likedByMe}
+                likeCount={likeCount}
+              />
+            </>
+          ) : (
+            <Link href={`/tweets/${id}`}>
+              <p className="whitespace-pre-wrap">{content}</p>
+
+              <LikeButton
+                onClick={handleToggleLike}
+                isLoading={toggleLike.isLoading}
+                likedByMe={likedByMe}
+                likeCount={likeCount}
+              />
+            </Link>
+          )}
+        </div>
       </div>
     </li>
   );
