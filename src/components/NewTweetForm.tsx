@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import { BsImage } from "react-icons/bs";
 import { Button } from "./Button";
 import { ProfileImage } from "./ProfileImage";
 import {
@@ -9,6 +10,7 @@ import {
   useState,
 } from "react";
 import { api } from "~/utils/api";
+import { ImageInput } from "./ImageInput";
 
 export function NewTweetForm() {
   const session = useSession();
@@ -84,7 +86,10 @@ function Form() {
           ref={inputRef}
         />
       </div>
-      <Button className="self-end">Tweet</Button>
+      <div className="ml-10 flex items-center justify-between pl-10 pt-2">
+        <ImageInput className="py-2" />
+        <Button>Tweet</Button>
+      </div>
     </form>
   );
 
