@@ -11,6 +11,7 @@ export type FeedData =
       tweets: {
         id: string;
         content: string;
+        imageUrl: string | null;
         createdAt: Date;
         likeCount: number;
         user: {

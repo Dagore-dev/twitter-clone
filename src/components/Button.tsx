@@ -10,8 +10,9 @@ type Props = {
 >;
 
 export function Button({
+  disabled,
   small = false,
-  gray = false,
+  gray = disabled,
   className = "",
   ...props
 }: Props) {

@@ -11,11 +11,11 @@ import {
 
 export const tweetRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(z.object({ content: z.string() }))
-    .mutation(async ({ input: { content }, ctx }) => {
+    .input(z.object({ content: z.string(), imageUrl: z.string().optional() }))
+    .mutation(async ({ input: { content, imageUrl }, ctx }) => {
       void ctx.revalidateSSG?.(`/profiles/${ctx.session.user.id}`);
       return await ctx.prisma.tweet.create({
-        data: { content, userId: ctx.session.user.id },
+        data: { content, imageUrl, userId: ctx.session.user.id },
       });
     }),
   infiniteFeed: publicProcedure
@@ -72,6 +72,43 @@ export const tweetRouter = createTRPCRouter({
         return { addedLike: false };
       }
     }),
+  getById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input: { id }, ctx }) => {
+      const currentUserId = ctx.session?.user.id;
+      const tweet = await ctx.prisma.tweet.findUnique({
+        where: { id },
+        select: {
+          id: true,
+          content: true,
+          imageUrl: true,
+          createdAt: true,
+          _count: { select: { likes: true } },
+          likes:
+            currentUserId == null
+              ? false
+              : { where: { userId: currentUserId } },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+        },
+      });
+      if (tweet == null) return;
+
+      return {
+        id: tweet.id,
+        content: tweet.content,
+        imageUrl: tweet.imageUrl,
+        createdAt: tweet.createdAt,
+        likeCount: tweet._count.likes,
+        user: tweet.user,
+        likedByMe: tweet.likes?.length > 0,
+      };
+    }),
 });
 
 async function getInfinityTweets({
@@ -95,6 +132,7 @@ async function getInfinityTweets({
     select: {
       id: true,
       content: true,
+      imageUrl: true,
       createdAt: true,
       _count: { select: { likes: true } },
       likes:
@@ -126,6 +164,7 @@ async function getInfinityTweets({
       return {
         id: tweet.id,
         content: tweet.content,
+        imageUrl: tweet.imageUrl,
         createdAt: tweet.createdAt,
         likeCount: tweet._count.likes,
         user: tweet.user,

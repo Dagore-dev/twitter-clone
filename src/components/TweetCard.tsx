@@ -5,15 +5,18 @@ import { dateTimeFormatter } from "../utils/dateTimeFormatter";
 import { LikeButton } from "./LikeButton";
 import { api } from "~/utils/api";
 import { type FeedData } from "~/interfaces/FeedData";
+import Image from "next/image";
 
 export function TweetCard({
   id,
   content,
+  imageUrl,
   createdAt,
   likeCount,
   likedByMe,
   user,
-}: Tweet) {
+  isDetail,
+}: Tweet & { isDetail?: boolean }) {
   const trpcUtils = api.useContext();
   const toggleLike = api.tweet.toggleLike.useMutation({
     onSuccess: ({ addedLike }) => {
@@ -51,14 +54,35 @@ export function TweetCard({
           </span>
         </div>
 
-        <p className="whitespace-pre-wrap">{content}</p>
+        <div>
+          {isDetail ? (
+            <p className="whitespace-pre-wrap">{content}</p>
+          ) : (
+            <Link href={`/tweets/${id}`}>
+              <p className="whitespace-pre-wrap">{content}</p>
+            </Link>
+          )}
 
-        <LikeButton
-          onClick={handleToggleLike}
-          isLoading={toggleLike.isLoading}
-          likedByMe={likedByMe}
-          likeCount={likeCount}
-        />
+          {imageUrl && (
+            <Link href={imageUrl} target="_blank">
+              <Image
+                className="mx-auto py-4"
+                src={imageUrl}
+                alt="No alt provided"
+                loading="lazy"
+                width={400}
+                height={400}
+              />
+            </Link>
+          )}
+
+          <LikeButton
+            onClick={handleToggleLike}
+            isLoading={toggleLike.isLoading}
+            likedByMe={likedByMe}
+            likeCount={likeCount}
+          />
+        </div>
       </div>
     </li>
   );
