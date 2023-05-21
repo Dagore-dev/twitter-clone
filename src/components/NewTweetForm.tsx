@@ -7,9 +7,11 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  useEffect,
 } from "react";
 import { api } from "~/utils/api";
 import { ImageInput } from "./ImageInput";
+import { LoadedImagePreview } from "./LoadedImagePreview";
 
 export function NewTweetForm() {
   const session = useSession();
@@ -89,12 +91,27 @@ function Form() {
           readOnly={isLoading || createTweet.isLoading}
           ref={inputRef}
         />
-
-        {imageSrc && <img src={imageSrc} alt="upload candidate" />}
       </div>
-      <div className="ml-10 flex items-center justify-between pl-10 pt-2">
-        <ImageInput className="py-2" />
-        <Button disabled={isLoading || createTweet.isLoading}>Tweet</Button>
+
+      <div
+        className={`ml-10 flex ${
+          imageSrc == null ? "" : "flex-col"
+        } items-center justify-between pl-10 pt-2`}
+      >
+        {imageSrc && (
+          <LoadedImagePreview
+            className=""
+            imageSrc={imageSrc}
+            setImageSrc={setImageSrc}
+          />
+        )}
+        <ImageInput className={`py-2 ${imageSrc == null ? "" : "hidden"}`} />
+        <Button
+          className={`${imageSrc == null ? "" : "mt-4 self-end"}`}
+          disabled={isLoading || createTweet.isLoading}
+        >
+          Tweet
+        </Button>
       </div>
     </form>
   );
