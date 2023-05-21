@@ -16,7 +16,7 @@ export function LoadedImagePreview({
         className="-m-8 h-8 w-8 cursor-pointer"
         onClick={() => {
           const fileInput = document.getElementById("img") as HTMLInputElement;
-          fileInput.value = null;
+          fileInput.value = "";
           setImageSrc(undefined);
         }}
       />
