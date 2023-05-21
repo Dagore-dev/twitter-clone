@@ -7,9 +7,11 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  useEffect,
 } from "react";
 import { api } from "~/utils/api";
 import { ImageInput } from "./ImageInput";
+import { LoadedImagePreview } from "./LoadedImagePreview";
 
 export function NewTweetForm() {
   const session = useSession();
@@ -22,6 +24,8 @@ export function NewTweetForm() {
 function Form() {
   const session = useSession();
   const [input, setInput] = useState("");
+  const [imageSrc, setImageSrc] = useState<string | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>();
   // Assigning a callback to the ref property allows us to update the size as soon as the textarea is render (since the cb gets its execution)
   const inputRef = useCallback((textarea: HTMLTextAreaElement) => {
@@ -71,7 +75,8 @@ function Form() {
     <form
       method="POST"
       onSubmit={handleSubmit}
-      className="flex flex-col gap-2 border-b  px-4 py-2"
+      onChange={handleChange}
+      className="flex flex-col gap-2 border-b px-4 py-2"
     >
       <div className="flex gap-4">
         <ProfileImage src={profileImage} />
@@ -83,25 +88,61 @@ function Form() {
           style={{ height: 0 }}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          readOnly={isLoading || createTweet.isLoading}
           ref={inputRef}
         />
       </div>
-      <div className="ml-10 flex items-center justify-between pl-10 pt-2">
-        <ImageInput className="py-2" />
-        <Button disabled={createTweet.isLoading}>Tweet</Button>
+
+      <div
+        className={`ml-10 flex ${
+          imageSrc == null ? "" : "flex-col"
+        } items-center justify-between pl-10 pt-2`}
+      >
+        {imageSrc && (
+          <LoadedImagePreview
+            className=""
+            imageSrc={imageSrc}
+            setImageSrc={setImageSrc}
+          />
+        )}
+        <ImageInput className={`py-2 ${imageSrc == null ? "" : "hidden"}`} />
+        <Button
+          className={`${imageSrc == null ? "" : "mt-4 self-end"}`}
+          disabled={isLoading || createTweet.isLoading}
+        >
+          Tweet
+        </Button>
       </div>
     </form>
   );
 
+  function handleChange(e: FormEvent) {
+    const reader = new FileReader();
+
+    reader.onload = (onLoad) => {
+      const target = onLoad.target;
+      if (target != null) {
+        setImageSrc(target.result?.toString());
+      }
+    };
+
+    const fileInput = e.target as HTMLInputElement;
+    if (fileInput?.files && fileInput.files.length > 0) {
+      reader.readAsDataURL(fileInput.files[0] as File);
+    }
+  }
+
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    setIsLoading(true);
     const form = e.currentTarget as HTMLFormElement;
     const fileInput = Array.from(form.elements).find(
       (control) => (control as HTMLInputElement).name === "img"
     ) as HTMLInputElement;
     const files = fileInput?.files;
-    if (files == null) {
+    if (files == null || files?.length === 0) {
       createTweet.mutate({ content: input });
+      setIsLoading(false);
       return;
     }
 
@@ -127,7 +168,12 @@ function Form() {
           })
           .catch((error) => console.log(error));
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setImageSrc(undefined);
+        setIsLoading(false);
+        form.reset();
+      });
   }
 }
 
