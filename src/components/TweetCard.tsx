@@ -5,6 +5,7 @@ import { dateTimeFormatter } from "../utils/dateTimeFormatter";
 import { LikeButton } from "./LikeButton";
 import { api } from "~/utils/api";
 import { type FeedData } from "~/interfaces/FeedData";
+import Image from "next/image";
 
 export function TweetCard({
   id,
@@ -55,32 +56,32 @@ export function TweetCard({
 
         <div>
           {isDetail ? (
-            <>
-              <p className="whitespace-pre-wrap">
-                {content} - {imageUrl}
-              </p>
-
-              <LikeButton
-                onClick={handleToggleLike}
-                isLoading={toggleLike.isLoading}
-                likedByMe={likedByMe}
-                likeCount={likeCount}
-              />
-            </>
+            <p className="whitespace-pre-wrap">{content}</p>
           ) : (
             <Link href={`/tweets/${id}`}>
-              <p className="whitespace-pre-wrap">
-                {content} - {imageUrl}
-              </p>
+              <p className="whitespace-pre-wrap">{content}</p>
+            </Link>
+          )}
 
-              <LikeButton
-                onClick={handleToggleLike}
-                isLoading={toggleLike.isLoading}
-                likedByMe={likedByMe}
-                likeCount={likeCount}
+          {imageUrl && (
+            <Link href={imageUrl} target="_blank">
+              <Image
+                className="mx-auto py-4"
+                src={imageUrl}
+                alt="No alt provided"
+                loading="lazy"
+                width={400}
+                height={400}
               />
             </Link>
           )}
+
+          <LikeButton
+            onClick={handleToggleLike}
+            isLoading={toggleLike.isLoading}
+            likedByMe={likedByMe}
+            likeCount={likeCount}
+          />
         </div>
       </div>
     </li>
