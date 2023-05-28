@@ -60,16 +60,18 @@ export function TweetCard({
           <p className="whitespace-pre-wrap">{content}</p>
 
           {imageUrl && (
-            <Link href={imageUrl} target="_blank">
-              <Image
-                className="mx-auto py-4"
-                src={imageUrl}
-                alt="No alt provided"
-                loading="lazy"
-                width={400}
-                height={400}
-              />
-            </Link>
+            <div className="p-5">
+              <Link href={imageUrl} target="_blank">
+                <Image
+                  className="mx-auto py-4"
+                  src={imageUrl}
+                  alt="No alt provided"
+                  loading="lazy"
+                  width={400}
+                  height={400}
+                />
+              </Link>
+            </div>
           )}
         </LinkOverlay>
 
