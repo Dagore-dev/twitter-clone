@@ -8,7 +8,7 @@ export function DetailHeader({
   isNested = false,
 }: {
   text: string;
-  sub?: string
+  sub?: string;
   isNested?: boolean;
 }) {
   const sharedClasses = "flex items-center border-b bg-white px-4 py-2";
@@ -21,9 +21,7 @@ export function DetailHeader({
       </Link>
       <div className="ml-2 flex-grow">
         <h1 className="text-lg font-bold">{text}</h1>
-        {
-          sub && <small className="text-sm text-gray-500">{sub}</small>
-        }
+        {sub && <small className="text-sm text-gray-500">{sub}</small>}
       </div>
     </>
   );
