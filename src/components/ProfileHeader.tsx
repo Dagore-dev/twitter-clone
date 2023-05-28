@@ -5,6 +5,7 @@ import { FollowButton } from "./FollowButton";
 import { api } from "~/utils/api";
 import { DetailHeader } from "./DetailHeader";
 import Image from "next/image";
+import { EditProfileButton } from "./EditProfileButton";
 
 export function ProfileHeader({
   id,
@@ -67,7 +68,7 @@ export function ProfileHeader({
           <div className="ml-2 flex-grow">
             <h1 className="text-lg font-bold">{profile?.name}</h1>
             <div>
-              <p>
+              <p className="relative">
                 {profile.bio.length === 0
                   ? "Welcome to my profile!"
                   : profile.bio}
@@ -85,6 +86,7 @@ export function ProfileHeader({
             isLoading={toggleFollow.isLoading}
             isFollowing={profile.isFollowing}
           />
+          <EditProfileButton userId={id} />
         </div>
       </header>
     </div>
