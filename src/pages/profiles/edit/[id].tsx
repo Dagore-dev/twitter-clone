@@ -4,35 +4,31 @@ import {
   type InferGetStaticPropsType,
   type NextPage,
 } from "next";
+import Head from "next/head";
+import { ssgHelper } from "~/server/api/ssgHelper";
 import { api } from "~/utils/api";
 import ErrorPage from "next/error";
-import { TweetCard } from "~/components/TweetCard";
-import { ssgHelper } from "~/server/api/ssgHelper";
 import { DetailHeader } from "~/components/DetailHeader";
+import { EditProfileForm } from "~/components/EditProfileForm";
 
-const TweetDetails: NextPage<
+const EditProfilePage: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
 > = ({ id }) => {
-  const { data: tweet } = api.tweet.getById.useQuery({ id });
-  if (tweet == null) {
+  // No loading state since we made this query on getStaticProps
+  const { data: profile } = api.profile.getById.useQuery({ id });
+
+  if (profile == null || profile.name == null)
     return <ErrorPage statusCode={404} />;
-  }
 
   return (
     <>
-      <DetailHeader text="Tweet" />
-      <ul>
-        <TweetCard
-          content={tweet.content}
-          imageUrl={tweet.imageUrl}
-          createdAt={tweet.createdAt}
-          id={tweet.id}
-          likeCount={tweet.likeCount}
-          likedByMe={tweet.likedByMe}
-          user={tweet.user}
-          isDetail={true}
-        />
-      </ul>
+      <Head>
+        <title>{`Twitter clone / ${profile.name}`}</title>
+      </Head>
+      <DetailHeader text="Edit profile" />
+      <main>
+        <EditProfileForm background={profile.background} bio={profile.bio} />
+      </main>
     </>
   );
 };
@@ -57,7 +53,7 @@ export async function getStaticProps(
   }
 
   const ssg = ssgHelper();
-  await ssg.tweet.getById.prefetch({ id });
+  await ssg.profile.getById.prefetch({ id });
 
   return {
     props: {
@@ -67,4 +63,4 @@ export async function getStaticProps(
   };
 }
 
-export default TweetDetails;
+export default EditProfilePage;
