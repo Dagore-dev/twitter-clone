@@ -9,6 +9,7 @@ import { ssgHelper } from "~/server/api/ssgHelper";
 import { api } from "~/utils/api";
 import ErrorPage from "next/error";
 import { DetailHeader } from "~/components/DetailHeader";
+import { EditProfileForm } from "~/components/EditProfileForm";
 
 const EditProfilePage: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -25,7 +26,9 @@ const EditProfilePage: NextPage<
         <title>{`Twitter clone / ${profile.name}`}</title>
       </Head>
       <DetailHeader text="Edit profile" />
-      <main></main>
+      <main>
+        <EditProfileForm background={profile.background} bio={profile.bio} />
+      </main>
     </>
   );
 };
