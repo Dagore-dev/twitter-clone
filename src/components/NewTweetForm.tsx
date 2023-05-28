@@ -7,7 +7,6 @@ import {
   useLayoutEffect,
   useRef,
   useState,
-  useEffect,
 } from "react";
 import { api } from "~/utils/api";
 import { ImageInput } from "./ImageInput";
@@ -141,7 +140,7 @@ function Form() {
     ) as HTMLInputElement;
     const files = fileInput?.files;
     if (files == null || files?.length === 0) {
-      createTweet.mutate({ content: input });
+      input.trim().length !== 0 && createTweet.mutate({ content: input });
       setIsLoading(false);
       return;
     }
