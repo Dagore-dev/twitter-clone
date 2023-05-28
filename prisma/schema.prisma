@@ -73,14 +73,27 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  bio           String    @default("")
+  backgroundId  String?
 
-  accounts      Account[]
-  sessions      Session[]
-  tweets        Tweet[]
-  likes         Like[]
-  
+  accounts   Account[]
+  sessions   Session[]
+  tweets     Tweet[]
+  likes      Like[]
+  background Image?    @relation(fields: [backgroundId], references: [id])
+
   followers User[] @relation(name: "Followers")
   follows   User[] @relation(name: "Followers")
+
+  @@index([backgroundId])
+}
+
+model Image {
+  id        String @id @default(cuid())
+  width     Int
+  height    Int
+  secureUrl String
+  user      User[]
 }
 
 model VerificationToken {
