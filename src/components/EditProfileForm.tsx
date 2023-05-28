@@ -2,18 +2,23 @@ import { type Image } from "@prisma/client";
 import { type FormEvent, useState } from "react";
 import { Button } from "./Button";
 import { LoadedImagePreview } from "./LoadedImagePreview";
+import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 export function EditProfileForm(props: {
   bio: string;
   background: Image | null;
 }) {
+  const session = useSession();
   const [bio, setBio] = useState(props.bio);
   const [imageSrc, setImageSrc] = useState<string | undefined>(
     props.background?.secureUrl
   );
+  const [loading, setIsLoading] = useState(false);
+  const updateProfile = api.profile.updateProfile.useMutation();
 
   return (
-    <form onChange={handleChange}>
+    <form onChange={handleChange} onSubmit={handleSubmit}>
       <div className="m-3">
         <label htmlFor="bio" className="mb-2 block">
           Your bio
@@ -34,6 +39,7 @@ export function EditProfileForm(props: {
         <input
           type="file"
           id="background"
+          name="background"
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
           accept="image/*"
         />
@@ -49,7 +55,11 @@ export function EditProfileForm(props: {
         )}
       </div>
 
-      <Button type="submit" className="m-3">
+      <Button
+        type="submit"
+        disabled={loading || updateProfile.isLoading}
+        className="m-3"
+      >
         Submit
       </Button>
     </form>
@@ -69,5 +79,55 @@ export function EditProfileForm(props: {
     if (fileInput?.files && fileInput.files.length > 0) {
       reader.readAsDataURL(fileInput.files[0] as File);
     }
+  }
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setIsLoading(true);
+    const form = e.currentTarget as HTMLFormElement;
+    const fileInput = Array.from(form.elements).find(
+      (control) => (control as HTMLInputElement).name === "background"
+    ) as HTMLInputElement;
+    const files = fileInput?.files;
+    if (files == null || files?.length === 0) {
+      bio.trim().length !== 0 &&
+        updateProfile.mutate({ userId: session.data?.user.id ?? "", bio });
+      setIsLoading(false);
+      return;
+    }
+
+    const formData = new FormData();
+    for (const file of files) {
+      formData.append("file", file);
+    }
+    formData.append("upload_preset", "tweets_images");
+
+    fetch("https://api.cloudinary.com/v1_1/dmhvmoqu2/image/upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        response
+          .json()
+          .then(({ secure_url, width, height }) => {
+            console.log(secure_url, width, height)
+            updateProfile.mutate({
+              userId: session.data?.user.id ?? "",
+              bio,
+              background: {
+                secureUrl: secure_url as string,
+                width: width as number,
+                height: height as number,
+              },
+            });
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setImageSrc(undefined);
+        setIsLoading(false);
+        form.reset();
+      });
   }
 }

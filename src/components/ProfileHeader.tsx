@@ -51,13 +51,23 @@ export function ProfileHeader({
         isNested={true}
       />
       <div className="h-[110px] md:h-[200px]">
-        <Image
-          className="max-h-full"
-          width={1920}
-          height={1200}
-          alt="background"
-          src="https://res.cloudinary.com/dmhvmoqu2/image/upload/v1684694355/tweets/ahrsbbel0zllalpx7az4.jpg"
-        />
+        {profile.background == null ? (
+          <Image
+            className="max-h-full"
+            width={1920}
+            height={1200}
+            alt="background"
+            src="https://res.cloudinary.com/dmhvmoqu2/image/upload/v1684694355/tweets/ahrsbbel0zllalpx7az4.jpg"
+          />
+        ) : (
+          <Image
+            className="max-h-full"
+            width={profile.background.width}
+            height={profile.background.height}
+            alt="background"
+            src={profile.background.secureUrl}
+          />
+        )}
       </div>
       <header className="border-b px-4 py-2">
         <ProfileImage
