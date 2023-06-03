@@ -129,7 +129,8 @@ export const profileRouter = createTRPCRouter({
 
       void ctx.revalidateSSG?.(`/profiles/${input.userId}`);
     }),
-  getFollowersOf: publicProcedure
+  // TODO: fix followedByUser, maybe raw query this time
+    getFollowersOf: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input: { userId }, ctx }) => {
       const currentUserId = ctx.session?.user.id;
@@ -146,12 +147,14 @@ export const profileRouter = createTRPCRouter({
 
       return {
         name: profile.name,
-        followers: profile.followers.map((user) => ({
+        followers: await Promise.all(profile.followers.map(async (user) => ({
           ...user,
           followedByUser:
             currentUserId != null &&
-            profile.follows.findIndex((u) => u.id === user.id) !== -1,
-        })),
+            (await ctx.prisma.user.findFirst({
+              where: { id: user.id, followers: { some: { id: currentUserId } } },
+            })) != null
+        }))),
       };
     }),
   getFollowedBy: publicProcedure
@@ -162,6 +165,7 @@ export const profileRouter = createTRPCRouter({
         where: { id: userId },
         select: {
           name: true,
+          followers: true,
           follows: true,
         },
       });
@@ -170,12 +174,14 @@ export const profileRouter = createTRPCRouter({
 
       return {
         name: profile.name,
-        follows: profile.follows.map((user) => ({
+        follows: await Promise.all(profile.follows.map(async (user) => ({
           ...user,
           followedByUser:
             currentUserId != null &&
-            profile.follows.findIndex((u) => u.id === user.id) !== -1,
-        })),
+            (await ctx.prisma.user.findFirst({
+              where: { id: user.id, followers: { some: { id: currentUserId } } },
+            })) != null
+        }))),
       };
     }),
 });
