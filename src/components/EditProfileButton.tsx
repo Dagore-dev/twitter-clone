@@ -6,7 +6,8 @@ export function EditProfileButton({ userId }: { userId: string }) {
   const session = useSession();
   const router = useRouter();
 
-  if (session.status !== "authenticated" || session.data.user.id !== userId) return null;
+  if (session.status !== "authenticated" || session.data.user.id !== userId)
+    return null;
 
   return (
     <Button onClick={() => void router.push(`/profiles/edit/${userId}`)} small>

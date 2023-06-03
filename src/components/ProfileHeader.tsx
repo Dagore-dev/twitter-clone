@@ -6,6 +6,8 @@ import { api } from "~/utils/api";
 import { DetailHeader } from "./DetailHeader";
 import Image from "next/image";
 import { EditProfileButton } from "./EditProfileButton";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export function ProfileHeader({
   id,
@@ -23,6 +25,7 @@ export function ProfileHeader({
     isFollowing: boolean;
   };
 }) {
+  const session = useSession();
   const trpcUtils = api.useContext();
   const toggleFollow = api.profile.toggleFollow.useMutation({
     onSuccess: ({ addedFollow }) => {
@@ -84,18 +87,24 @@ export function ProfileHeader({
                   : profile.bio}
               </p>
               <span className="text-gray-500">
-                {profile.followersCount}{" "}
-                {getPlural(profile.followersCount, "Follower", "Followers")} -{" "}
-                {profile.followsCount} Following
+                <Link href={`/profiles/followers/${id}`}>
+                  {profile.followersCount}{" "}
+                  {getPlural(profile.followersCount, "Follower", "Followers")}
+                </Link>
+                <Link href={`/profiles/following/${id}`}>
+                  {" "}
+                  - {profile.followsCount} Following
+                </Link>
               </span>
             </div>
           </div>
-          <FollowButton
-            userId={id}
-            onClick={() => toggleFollow.mutate({ userId: id })}
-            isLoading={toggleFollow.isLoading}
-            isFollowing={profile.isFollowing}
-          />
+          {session.data?.user.id !== id && (
+            <FollowButton
+              onClick={() => toggleFollow.mutate({ userId: id })}
+              isLoading={toggleFollow.isLoading}
+              isFollowing={profile.isFollowing}
+            />
+          )}
           <EditProfileButton userId={id} />
         </div>
       </header>

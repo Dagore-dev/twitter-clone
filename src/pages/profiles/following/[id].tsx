@@ -5,35 +5,38 @@ import {
   type NextPage,
 } from "next";
 import Head from "next/head";
+import { DetailHeader } from "~/components/DetailHeader";
 import { ssgHelper } from "~/server/api/ssgHelper";
 import { api } from "~/utils/api";
 import ErrorPage from "next/error";
-import { DetailHeader } from "~/components/DetailHeader";
-import { EditProfileForm } from "~/components/EditProfileForm";
-import { useSession } from "next-auth/react";
+import { UserCard } from "~/components/UserCard";
 
-const EditProfilePage: NextPage<
+const FollowersPage: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
 > = ({ id }) => {
-  // No loading state since we made this query on getStaticProps
-  const { data: profile } = api.profile.getById.useQuery({ id });
-  const session = useSession();
+  const { data: profile } = api.profile.getFollowedBy.useQuery({ userId: id });
 
   if (profile == null || profile.name == null)
     return <ErrorPage statusCode={404} />;
 
-  if (session.status !== "authenticated" || session.data.user.id !== id) {
-    return <ErrorPage statusCode={401} />;
-  }
-
   return (
     <>
       <Head>
-        <title>{`Twitter clone / ${profile.name}`}</title>
+        <title>{`People followed by ${profile.name}`}</title>
       </Head>
-      <DetailHeader text="Edit profile" />
+      <DetailHeader text={profile.name} />
       <main>
-        <EditProfileForm background={profile.background} bio={profile.bio} />
+        {profile.follows.length === 0 ? (
+          <h2 className="my-4 text-center text-2xl text-gray-500">
+            No follows
+          </h2>
+        ) : (
+          <ul>
+            {profile.follows.map((user) => (
+              <UserCard key={user.id} user={user} />
+            ))}
+          </ul>
+        )}
       </main>
     </>
   );
@@ -59,7 +62,7 @@ export async function getStaticProps(
   }
 
   const ssg = ssgHelper();
-  await ssg.profile.getById.prefetch({ id });
+  await ssg.profile.getFollowedBy.prefetch({ userId: id });
 
   return {
     props: {
@@ -69,4 +72,4 @@ export async function getStaticProps(
   };
 }
 
-export default EditProfilePage;
+export default FollowersPage;

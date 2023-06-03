@@ -129,4 +129,53 @@ export const profileRouter = createTRPCRouter({
 
       void ctx.revalidateSSG?.(`/profiles/${input.userId}`);
     }),
+  getFollowersOf: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input: { userId }, ctx }) => {
+      const currentUserId = ctx.session?.user.id;
+      const profile = await ctx.prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          name: true,
+          followers: true,
+          follows: true,
+        },
+      });
+
+      if (profile == null) return;
+
+      return {
+        name: profile.name,
+        followers: profile.followers.map((user) => ({
+          ...user,
+          followedByUser:
+            currentUserId != null &&
+            profile.follows.findIndex((u) => u.id === user.id) !== -1,
+        })),
+      };
+    }),
+  getFollowedBy: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input: { userId }, ctx }) => {
+      const currentUserId = ctx.session?.user.id;
+      const profile = await ctx.prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          name: true,
+          follows: true,
+        },
+      });
+
+      if (profile == null) return;
+
+      return {
+        name: profile.name,
+        follows: profile.follows.map((user) => ({
+          ...user,
+          followedByUser:
+            currentUserId != null &&
+            profile.follows.findIndex((u) => u.id === user.id) !== -1,
+        })),
+      };
+    }),
 });

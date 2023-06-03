@@ -110,7 +110,7 @@ export function EditProfileForm(props: {
         response
           .json()
           .then(({ secure_url, width, height }) => {
-            console.log(secure_url, width, height)
+            console.log(secure_url, width, height);
             updateProfile.mutate({
               userId: session.data?.user.id ?? "",
               bio,
