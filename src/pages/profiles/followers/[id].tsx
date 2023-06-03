@@ -26,11 +26,15 @@ const FollowersPage: NextPage<
       </Head>
       <DetailHeader text={profile.name} />
       <main>
-        <ul>
+        {
+          profile.followers.length === 0
+          ? <h2 className="my-4 text-center text-2xl text-gray-500">No followers</h2>
+          :         <ul>
           {profile.followers.map((user) => (
             <UserCard key={user.id} user={user} />
           ))}
         </ul>
+        }
       </main>
     </>
   );
