@@ -129,4 +129,30 @@ export const profileRouter = createTRPCRouter({
 
       void ctx.revalidateSSG?.(`/profiles/${input.userId}`);
     }),
+  getFollowersOf: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input: { userId }, ctx }) => {
+      const profile = await ctx.prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          name: true,
+          followers: true,
+        },
+      });
+
+      return profile;
+    }),
+  getFollowedBy: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input: { userId }, ctx }) => {
+      const profile = await ctx.prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          name: true,
+          follows: true,
+        },
+      });
+
+      return profile;
+    }),
 });

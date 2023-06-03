@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import { DetailHeader } from "./DetailHeader";
 import Image from "next/image";
 import { EditProfileButton } from "./EditProfileButton";
+import Link from "next/link";
 
 export function ProfileHeader({
   id,
@@ -84,9 +85,14 @@ export function ProfileHeader({
                   : profile.bio}
               </p>
               <span className="text-gray-500">
-                {profile.followersCount}{" "}
-                {getPlural(profile.followersCount, "Follower", "Followers")} -{" "}
-                {profile.followsCount} Following
+                <Link href={`/profiles/followers/${id}`}>
+                  {profile.followersCount}{" "}
+                  {getPlural(profile.followersCount, "Follower", "Followers")}
+                </Link>
+                <Link href={`/profiles/following/${id}`}>
+                  {" "}
+                  - {profile.followsCount} Following
+                </Link>
               </span>
             </div>
           </div>
