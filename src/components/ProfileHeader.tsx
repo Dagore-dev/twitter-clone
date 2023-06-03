@@ -98,13 +98,13 @@ export function ProfileHeader({
               </span>
             </div>
           </div>
-          {session.data?.user.id !== id &&
+          {session.data?.user.id !== id && (
             <FollowButton
               onClick={() => toggleFollow.mutate({ userId: id })}
               isLoading={toggleFollow.isLoading}
               isFollowing={profile.isFollowing}
             />
-          }
+          )}
           <EditProfileButton userId={id} />
         </div>
       </header>

@@ -7,15 +7,10 @@ interface Props {
   isLoading: boolean;
 }
 
-export function FollowButton({
-  isFollowing,
-  isLoading,
-  onClick,
-}: Props) {
+export function FollowButton({ isFollowing, isLoading, onClick }: Props) {
   const session = useSession();
 
-  if (session.status !== "authenticated")
-    return null;
+  if (session.status !== "authenticated") return null;
 
   return (
     <Button disabled={isLoading} onClick={onClick} small gray={isFollowing}>

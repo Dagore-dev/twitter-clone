@@ -17,13 +17,13 @@ const EditProfilePage: NextPage<
 > = ({ id }) => {
   // No loading state since we made this query on getStaticProps
   const { data: profile } = api.profile.getById.useQuery({ id });
-  const session = useSession()
+  const session = useSession();
 
   if (profile == null || profile.name == null)
     return <ErrorPage statusCode={404} />;
 
-  if (session.status !== 'authenticated' || session.data.user.id !== id) {
-    return <ErrorPage statusCode={401} />
+  if (session.status !== "authenticated" || session.data.user.id !== id) {
+    return <ErrorPage statusCode={401} />;
   }
 
   return (
