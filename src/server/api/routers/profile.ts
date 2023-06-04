@@ -90,6 +90,9 @@ export const profileRouter = createTRPCRouter({
           },
           data: {
             bio: input.bio,
+            background: {
+              disconnect: true,
+            },
           },
         });
       } else {
@@ -129,8 +132,7 @@ export const profileRouter = createTRPCRouter({
 
       void ctx.revalidateSSG?.(`/profiles/${input.userId}`);
     }),
-  // TODO: fix followedByUser, maybe raw query this time
-    getFollowersOf: publicProcedure
+  getFollowersOf: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input: { userId }, ctx }) => {
       const currentUserId = ctx.session?.user.id;
@@ -147,14 +149,19 @@ export const profileRouter = createTRPCRouter({
 
       return {
         name: profile.name,
-        followers: await Promise.all(profile.followers.map(async (user) => ({
-          ...user,
-          followedByUser:
-            currentUserId != null &&
-            (await ctx.prisma.user.findFirst({
-              where: { id: user.id, followers: { some: { id: currentUserId } } },
-            })) != null
-        }))),
+        followers: await Promise.all(
+          profile.followers.map(async (user) => ({
+            ...user,
+            followedByUser:
+              currentUserId != null &&
+              (await ctx.prisma.user.findFirst({
+                where: {
+                  id: user.id,
+                  followers: { some: { id: currentUserId } },
+                },
+              })) != null,
+          }))
+        ),
       };
     }),
   getFollowedBy: publicProcedure
@@ -174,14 +181,19 @@ export const profileRouter = createTRPCRouter({
 
       return {
         name: profile.name,
-        follows: await Promise.all(profile.follows.map(async (user) => ({
-          ...user,
-          followedByUser:
-            currentUserId != null &&
-            (await ctx.prisma.user.findFirst({
-              where: { id: user.id, followers: { some: { id: currentUserId } } },
-            })) != null
-        }))),
+        follows: await Promise.all(
+          profile.follows.map(async (user) => ({
+            ...user,
+            followedByUser:
+              currentUserId != null &&
+              (await ctx.prisma.user.findFirst({
+                where: {
+                  id: user.id,
+                  followers: { some: { id: currentUserId } },
+                },
+              })) != null,
+          }))
+        ),
       };
     }),
 });

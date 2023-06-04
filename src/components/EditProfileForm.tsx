@@ -33,13 +33,13 @@ export function EditProfileForm(props: {
         />
       </div>
       <div className="mx-3 mb-6">
-        <label htmlFor="background" className="mb-2 block">
+        <label htmlFor="img" className="mb-2 block">
           Your background picture
         </label>
         <input
           type="file"
-          id="background"
-          name="background"
+          id="img"
+          name="img"
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
           accept="image/*"
         />
@@ -86,12 +86,16 @@ export function EditProfileForm(props: {
     setIsLoading(true);
     const form = e.currentTarget as HTMLFormElement;
     const fileInput = Array.from(form.elements).find(
-      (control) => (control as HTMLInputElement).name === "background"
+      (control) => (control as HTMLInputElement).name === "img"
     ) as HTMLInputElement;
     const files = fileInput?.files;
     if (files == null || files?.length === 0) {
       bio.trim().length !== 0 &&
-        updateProfile.mutate({ userId: session.data?.user.id ?? "", bio });
+        updateProfile.mutate({
+          userId: session.data?.user.id ?? "",
+          bio,
+          background: undefined,
+        });
       setIsLoading(false);
       return;
     }
@@ -110,7 +114,6 @@ export function EditProfileForm(props: {
         response
           .json()
           .then(({ secure_url, width, height }) => {
-            console.log(secure_url, width, height);
             updateProfile.mutate({
               userId: session.data?.user.id ?? "",
               bio,
@@ -121,7 +124,7 @@ export function EditProfileForm(props: {
               },
             });
           })
-          .catch((error) => console.log(error));
+          .catch((error) => console.error(error));
       })
       .catch((error) => console.error(error))
       .finally(() => {
