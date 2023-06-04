@@ -129,7 +129,6 @@ export const profileRouter = createTRPCRouter({
 
       void ctx.revalidateSSG?.(`/profiles/${input.userId}`);
     }),
-  // TODO: fix followedByUser, maybe raw query this time
     getFollowersOf: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input: { userId }, ctx }) => {
