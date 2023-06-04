@@ -91,7 +91,11 @@ export function EditProfileForm(props: {
     const files = fileInput?.files;
     if (files == null || files?.length === 0) {
       bio.trim().length !== 0 &&
-        updateProfile.mutate({ userId: session.data?.user.id ?? "", bio, background: undefined });
+        updateProfile.mutate({
+          userId: session.data?.user.id ?? "",
+          bio,
+          background: undefined,
+        });
       setIsLoading(false);
       return;
     }
