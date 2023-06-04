@@ -162,7 +162,6 @@ export const profileRouter = createTRPCRouter({
         where: { id: userId },
         select: {
           name: true,
-          followers: true,
           follows: true,
         },
       });
@@ -175,7 +174,7 @@ export const profileRouter = createTRPCRouter({
           ...user,
           followedByUser:
             currentUserId != null &&
-            profile.followers.findIndex((u) => u.id === user.id) !== -1,
+            profile.follows.findIndex((u) => u.id === user.id) !== -1,
         })),
       };
     }),
