@@ -90,6 +90,9 @@ export const profileRouter = createTRPCRouter({
           },
           data: {
             bio: input.bio,
+            background: {
+              disconnect: true
+            }
           },
         });
       } else {
