@@ -16,13 +16,16 @@ model Tweet {
   userId    String
   content   String
   imageUrl  String?
+  imageId   String?
   createdAt DateTime @default(now())
 
   user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   likes Like[]
+  image Image? @relation(fields: [imageId], references: [id])
 
   @@unique([createdAt, id])
   @@index([userId])
+  @@index([imageId])
 }
 
 model Like {
@@ -89,11 +92,13 @@ model User {
 }
 
 model Image {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   width     Int
   height    Int
+  alt       String  @default("No alternative text provided")
   secureUrl String
   user      User[]
+  Tweet     Tweet[]
 }
 
 model VerificationToken {
