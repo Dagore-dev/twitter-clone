@@ -11,7 +11,19 @@ import {
 
 export const tweetRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(z.object({ content: z.string(), image: z.object({ secureUrl: z.string(), width: z.number(), height: z.number(), alt: z.string().optional() }).optional() }))
+    .input(
+      z.object({
+        content: z.string(),
+        image: z
+          .object({
+            secureUrl: z.string(),
+            width: z.number(),
+            height: z.number(),
+            alt: z.string().optional(),
+          })
+          .optional(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       void ctx.revalidateSSG?.(`/profiles/${ctx.session.user.id}`);
       const userId = ctx.session.user.id;
@@ -29,27 +41,29 @@ export const tweetRouter = createTRPCRouter({
                 width: true,
                 height: true,
                 secureUrl: true,
-                alt: true
-              }
-            }
-          }
+                alt: true,
+              },
+            },
+          },
         });
       }
 
       return await ctx.prisma.tweet.create({
         data: {
           content: input.content,
-          user: { connect: {
-            id: userId
-          } },
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
           image: {
             create: {
               width: input.image.width,
               height: input.image.height,
               secureUrl: input.image.secureUrl,
-              alt: input.image.alt
-            }
-          }
+              alt: input.image.alt,
+            },
+          },
         },
         select: {
           id: true,
@@ -61,11 +75,11 @@ export const tweetRouter = createTRPCRouter({
               width: true,
               height: true,
               secureUrl: true,
-              alt: true
-            }
-          }
-        }
-      })
+              alt: true,
+            },
+          },
+        },
+      });
     }),
   infiniteFeed: publicProcedure
     .input(
@@ -149,9 +163,9 @@ export const tweetRouter = createTRPCRouter({
               width: true,
               height: true,
               secureUrl: true,
-              alt: true
-            }
-          }
+              alt: true,
+            },
+          },
         },
       });
       if (tweet == null) return;
@@ -207,9 +221,9 @@ async function getInfinityTweets({
           width: true,
           height: true,
           secureUrl: true,
-          alt: true
-        }
-      }
+          alt: true,
+        },
+      },
     },
   });
 

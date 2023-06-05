@@ -14,6 +14,6 @@ export default interface Tweet {
     height: number;
     secureUrl: string;
     alt: string;
-  } | null
+  } | null;
   likedByMe: boolean;
 }

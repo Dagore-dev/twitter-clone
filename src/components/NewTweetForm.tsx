@@ -150,7 +150,9 @@ function Form() {
       formData.append("file", file);
     }
     formData.append("upload_preset", "tweets_images");
-    const altText = (document.getElementById('altText') as HTMLInputElement | undefined)?.value
+    const altText = (
+      document.getElementById("altText") as HTMLInputElement | undefined
+    )?.value;
 
     fetch("https://api.cloudinary.com/v1_1/dmhvmoqu2/image/upload", {
       method: "POST",
@@ -166,7 +168,7 @@ function Form() {
                 secureUrl: secure_url as string,
                 width: width as number,
                 height: height as number,
-                alt: altText?.trim().length === 0 ? undefined : altText
+                alt: altText?.trim().length === 0 ? undefined : altText,
               },
             });
           })
