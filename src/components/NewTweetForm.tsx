@@ -34,11 +34,11 @@ function Form() {
   const trpcUtils = api.useContext();
   const createTweet = api.tweet.create.useMutation({
     onSuccess: (newTweet) => {
+      //TODO: Fix type error and make image appear
       setInput("");
       trpcUtils.tweet.infiniteFeed.setInfiniteData({}, (oldData) => {
         if (oldData == null || oldData.pages[0] == null) return;
         if (session.status !== "authenticated") return;
-
         const newCacheTweet = {
           ...newTweet,
           likeCount: 0,
@@ -150,6 +150,9 @@ function Form() {
       formData.append("file", file);
     }
     formData.append("upload_preset", "tweets_images");
+    const altText = (
+      document.getElementById("altText") as HTMLInputElement | undefined
+    )?.value;
 
     fetch("https://api.cloudinary.com/v1_1/dmhvmoqu2/image/upload", {
       method: "POST",
@@ -158,14 +161,18 @@ function Form() {
       .then((response) => {
         response
           .json()
-          .then(({ secure_url }) => {
+          .then(({ secure_url, width, height }) => {
             createTweet.mutate({
               content: input,
-              imageUrl: secure_url as string,
+              image: {
+                secureUrl: secure_url as string,
+                width: width as number,
+                height: height as number,
+                alt: altText?.trim().length === 0 ? undefined : altText,
+              },
             });
-            console.log(secure_url);
           })
-          .catch((error) => console.log(error));
+          .catch((error) => console.error(error));
       })
       .catch((error) => console.error(error))
       .finally(() => {

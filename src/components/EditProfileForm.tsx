@@ -105,6 +105,9 @@ export function EditProfileForm(props: {
       formData.append("file", file);
     }
     formData.append("upload_preset", "tweets_images");
+    const altText = (
+      document.getElementById("altText") as HTMLInputElement | undefined
+    )?.value;
 
     fetch("https://api.cloudinary.com/v1_1/dmhvmoqu2/image/upload", {
       method: "POST",
@@ -121,6 +124,7 @@ export function EditProfileForm(props: {
                 secureUrl: secure_url as string,
                 width: width as number,
                 height: height as number,
+                alt: altText?.trim().length === 0 ? undefined : altText,
               },
             });
           })

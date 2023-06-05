@@ -19,6 +19,12 @@ export type FeedData =
           name: string | null;
           image: string | null;
         };
+        image: {
+          width: number;
+          height: number;
+          secureUrl: string;
+          alt: string;
+        } | null;
         likedByMe: boolean;
       }[];
     }>
