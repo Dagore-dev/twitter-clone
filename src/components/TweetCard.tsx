@@ -16,6 +16,7 @@ export function TweetCard({
   likeCount,
   likedByMe,
   user,
+  image,
   isDetail,
 }: Tweet & { isDetail?: boolean }) {
   const trpcUtils = api.useContext();
@@ -69,6 +70,21 @@ export function TweetCard({
                   loading="lazy"
                   width={400}
                   height={400}
+                />
+              </Link>
+            </div>
+          )}
+
+          {image && (
+            <div className="p-5">
+              <Link href={image.secureUrl} target="_blank">
+                <Image
+                  className="mx-auto py-4"
+                  src={image.secureUrl}
+                  alt={image.alt}
+                  loading="lazy"
+                  width={image.width}
+                  height={image.height}
                 />
               </Link>
             </div>

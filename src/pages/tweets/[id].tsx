@@ -30,6 +30,7 @@ const TweetDetails: NextPage<
           likeCount={tweet.likeCount}
           likedByMe={tweet.likedByMe}
           user={tweet.user}
+          image={tweet.image}
           isDetail={true}
         />
       </ul>

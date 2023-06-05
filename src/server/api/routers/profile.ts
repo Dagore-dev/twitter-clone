@@ -74,6 +74,7 @@ export const profileRouter = createTRPCRouter({
             width: z.number(),
             height: z.number(),
             secureUrl: z.string(),
+            alt: z.string().optional()
           })
           .optional(),
       })
