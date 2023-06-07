@@ -101,6 +101,7 @@ function Form() {
           <LoadedImagePreview
             className=""
             imageSrc={imageSrc}
+            loading={isLoading || createTweet.isLoading}
             setImageSrc={setImageSrc}
           />
         )}
@@ -133,6 +134,8 @@ function Form() {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (isLoading || createTweet.isLoading) return;
+
     setIsLoading(true);
     const form = e.currentTarget as HTMLFormElement;
     const fileInput = Array.from(form.elements).find(
