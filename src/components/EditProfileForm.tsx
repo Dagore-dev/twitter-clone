@@ -50,6 +50,7 @@ export function EditProfileForm(props: {
           <LoadedImagePreview
             className="mx-auto pt-6"
             imageSrc={imageSrc}
+            loading={loading || updateProfile.isLoading}
             setImageSrc={setImageSrc}
           />
         )}
@@ -83,6 +84,8 @@ export function EditProfileForm(props: {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (loading || updateProfile.isLoading) return;
+
     setIsLoading(true);
     const form = e.currentTarget as HTMLFormElement;
     const fileInput = Array.from(form.elements).find(
