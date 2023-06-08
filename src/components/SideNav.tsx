@@ -1,7 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
-import Link from "next/link";
 import { IconHoverEffect } from "./IconHoverEffect";
-import { VscAccount, VscHome, VscSignIn, VscSignOut } from "react-icons/vsc";
+import { VscAccount, VscBell, VscHome, VscSignIn, VscSignOut } from "react-icons/vsc";
+import { SideNavItem } from "./SideNavItem";
 
 export function SideNav() {
   const session = useSession();
@@ -10,27 +10,25 @@ export function SideNav() {
   return (
     <nav className="fixed bottom-0 z-10 w-full bg-white px-2 py-1 md:sticky md:top-0 md:w-auto md:py-4">
       <ul className="flex items-start justify-evenly gap-2 whitespace-nowrap md:flex-col">
-        <li>
-          <Link href="/">
-            <IconHoverEffect red={false}>
-              <span className="flex items-center gap-4">
-                <VscHome className="h-8 w-8" />
-                <span className="hidden text-lg md:inline">Home</span>
-              </span>
-            </IconHoverEffect>
-          </Link>
-        </li>
+        <SideNavItem
+          href="/"
+          Icon={VscHome}
+          name="Home"
+        />
         {user != null && (
-          <li>
-            <Link href={`/profiles/${user.id}`}>
-              <IconHoverEffect red={false}>
-                <span className="flex items-center gap-4">
-                  <VscAccount className="h-8 w-8" />
-                  <span className="hidden text-lg md:inline">Profile</span>
-                </span>
-              </IconHoverEffect>
-            </Link>
-          </li>
+          <>
+            <SideNavItem
+              href={`/profiles/${user.id}`}
+              Icon={VscAccount}
+              name="Profile"
+            />
+
+            <SideNavItem
+              href={`/notifications`}
+              Icon={VscBell}
+              name="Notifications"
+            />
+          </>
         )}
         {user != null ? (
           <li>

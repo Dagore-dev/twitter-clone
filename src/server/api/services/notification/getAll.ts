@@ -6,7 +6,7 @@ export const getAll = protectedProcedure
   limit: z.number().optional(),
   cursor: z.object({ id: z.string(), createdAt: z.date() }).optional(),
 }))
-.query(async ({ input: {limit = 10, cursor}, ctx }) => {
+.query(async ({ input: { limit = 10, cursor }, ctx }) => {
   const currentUserId = ctx.session.user.id
   const notifications = await ctx.prisma.notification.findMany({
     where: { notifiedId: currentUserId },
