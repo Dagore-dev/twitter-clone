@@ -19,6 +19,7 @@ export const getAll = protectedProcedure
       createdAt: true,
       tweet: {
         select: {
+          id: true,
           content: true,
           image: true
         }

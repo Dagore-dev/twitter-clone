@@ -8,9 +8,26 @@ export const toggleLike = protectedProcedure
   const existingLike = await ctx.prisma.like.findUnique({
     where: { userId_tweetId: data },
   });
+  const tweetAuthor = await ctx.prisma.tweet.findUnique({
+    where: { id }
+  })
 
   if (existingLike == null) {
     await ctx.prisma.like.create({ data });
+    await ctx.prisma.notification.create({
+      data: {
+        type: 'LIKE',
+        tweet: {
+          connect: { id }
+        },
+        notifier: {
+          connect: { id: data.userId }
+        },
+        notified: {
+          connect: { id: tweetAuthor?.userId }
+        }
+      }
+    })
     return { addedLike: true };
   } else {
     await ctx.prisma.like.delete({ where: { userId_tweetId: data } });
