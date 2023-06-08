@@ -22,7 +22,9 @@ export function InfiniteNotificationsList({
   if (isError) return <h1>Error</h1>;
   if (notifications == null || notifications.length === 0) {
     return (
-      <h2 className="my-4 text-center text-2xl text-gray-500">No notifications</h2>
+      <h2 className="my-4 text-center text-2xl text-gray-500">
+        No notifications
+      </h2>
     );
   }
 

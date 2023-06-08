@@ -1,6 +1,12 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import { IconHoverEffect } from "./IconHoverEffect";
-import { VscAccount, VscBell, VscHome, VscSignIn, VscSignOut } from "react-icons/vsc";
+import {
+  VscAccount,
+  VscBell,
+  VscHome,
+  VscSignIn,
+  VscSignOut,
+} from "react-icons/vsc";
 import { SideNavItem } from "./SideNavItem";
 
 export function SideNav() {
@@ -10,11 +16,7 @@ export function SideNav() {
   return (
     <nav className="fixed bottom-0 z-10 w-full bg-white px-2 py-1 md:sticky md:top-0 md:w-auto md:py-4">
       <ul className="flex items-start justify-evenly gap-2 whitespace-nowrap md:flex-col">
-        <SideNavItem
-          href="/"
-          Icon={VscHome}
-          name="Home"
-        />
+        <SideNavItem href="/" Icon={VscHome} name="Home" />
         {user != null && (
           <>
             <SideNavItem
