@@ -42,7 +42,7 @@ model Like {
 }
 
 model Notification {
-  id         String   @id @default(cuid())
+  id         String   @id @default(uuid())
   tweetId    String
   tweet      Tweet    @relation(fields: [tweetId], references: [id], onDelete: Cascade)
   notifiedId String
@@ -53,6 +53,7 @@ model Notification {
   read       Boolean  @default(false)
   createdAt  DateTime @default(now())
 
+  @@unique([createdAt, id])
   @@index([tweetId])
   @@index([notifiedId])
   @@index([notifierId])
