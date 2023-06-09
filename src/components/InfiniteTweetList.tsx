@@ -22,11 +22,7 @@ export function InfiniteTweetList({
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <h1>Error</h1>;
   if (tweets == null || tweets.length === 0) {
-    return (
-      <NoContentHeading>
-        No tweets
-      </NoContentHeading>
-    );
+    return <NoContentHeading>No tweets</NoContentHeading>;
   }
 
   return (

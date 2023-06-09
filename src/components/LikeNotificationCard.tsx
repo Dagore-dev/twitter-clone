@@ -10,7 +10,7 @@ export function LikeNotificationCard({ notifier, read, tweet }: Notification) {
       <LinkOverlay href={`/tweets/${tweet.id}`} isDetail={false}>
         <div className="flex">
           <VscHeartFilled className="m-3 h-9 w-9 fill-red-500" />
-          <div className="flex flex-col w-3/4">
+          <div className="flex w-3/4 flex-col">
             <Link href={`/profiles/${notifier.id}`}>
               <ProfileImage src={notifier.image} className="m-3 h-9 w-9" />
             </Link>

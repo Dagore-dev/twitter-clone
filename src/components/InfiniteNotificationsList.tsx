@@ -22,11 +22,7 @@ export function InfiniteNotificationsList({
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <h1>Error</h1>;
   if (notifications == null || notifications.length === 0) {
-    return (
-      <NoContentHeading>
-        No notifications
-      </NoContentHeading>
-    );
+    return <NoContentHeading>No notifications</NoContentHeading>;
   }
 
   return (

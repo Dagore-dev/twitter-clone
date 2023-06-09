@@ -28,9 +28,7 @@ const FollowersPage: NextPage<
       <DetailHeader text={profile.name} />
       <main>
         {profile.follows.length === 0 ? (
-          <NoContentHeading>
-            No follows
-          </NoContentHeading>
+          <NoContentHeading>No follows</NoContentHeading>
         ) : (
           <ul>
             {profile.follows.map((user) => (

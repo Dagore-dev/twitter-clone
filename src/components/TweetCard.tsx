@@ -33,7 +33,7 @@ export function TweetCard({
         { userId: user.id },
         (oldData) => updateData(oldData, addedLike)
       );
-      trpcUtils.tweet.getById.setData({ id }, oldData => {
+      trpcUtils.tweet.getById.setData({ id }, (oldData) => {
         if (oldData == null) return;
 
         const countModifier = addedLike ? 1 : -1;
