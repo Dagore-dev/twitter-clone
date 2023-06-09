@@ -20,7 +20,6 @@ export function TweetCard({
   isDetail,
 }: Tweet & { isDetail?: boolean }) {
   const trpcUtils = api.useContext();
-  // TODO: toggleLike only updates the state if the action takes place on the feed, not in the detail view.
   const toggleLike = api.tweet.toggleLike.useMutation({
     onSuccess: ({ addedLike }) => {
       trpcUtils.tweet.infiniteFeed.setInfiniteData({}, (oldData) =>
@@ -34,6 +33,17 @@ export function TweetCard({
         { userId: user.id },
         (oldData) => updateData(oldData, addedLike)
       );
+      trpcUtils.tweet.getById.setData({ id }, (oldData) => {
+        if (oldData == null) return;
+
+        const countModifier = addedLike ? 1 : -1;
+
+        return {
+          ...oldData,
+          likeCount: oldData.likeCount + countModifier,
+          likedByMe: addedLike,
+        };
+      });
     },
   });
 

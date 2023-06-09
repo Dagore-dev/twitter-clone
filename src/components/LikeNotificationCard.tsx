@@ -6,11 +6,11 @@ import { LinkOverlay } from "./LinkOverlay";
 
 export function LikeNotificationCard({ notifier, read, tweet }: Notification) {
   return (
-    <li>
+    <li className="last:pb-96">
       <LinkOverlay href={`/tweets/${tweet.id}`} isDetail={false}>
         <div className="flex">
           <VscHeartFilled className="m-3 h-9 w-9 fill-red-500" />
-          <div className="flex flex-col">
+          <div className="flex w-3/4 flex-col">
             <Link href={`/profiles/${notifier.id}`}>
               <ProfileImage src={notifier.image} className="m-3 h-9 w-9" />
             </Link>
