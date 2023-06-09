@@ -34,7 +34,6 @@ function Form() {
   const trpcUtils = api.useContext();
   const createTweet = api.tweet.create.useMutation({
     onSuccess: (newTweet) => {
-      //TODO: Fix type error and make image appear
       setInput("");
       trpcUtils.tweet.infiniteFeed.setInfiniteData({}, (oldData) => {
         if (oldData == null || oldData.pages[0] == null) return;

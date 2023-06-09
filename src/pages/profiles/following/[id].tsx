@@ -10,6 +10,7 @@ import { ssgHelper } from "~/server/api/ssgHelper";
 import { api } from "~/utils/api";
 import ErrorPage from "next/error";
 import { UserCard } from "~/components/UserCard";
+import { NoContentHeading } from "~/components/NoContentHeading";
 
 const FollowersPage: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -27,9 +28,9 @@ const FollowersPage: NextPage<
       <DetailHeader text={profile.name} />
       <main>
         {profile.follows.length === 0 ? (
-          <h2 className="my-4 text-center text-2xl text-gray-500">
+          <NoContentHeading>
             No follows
-          </h2>
+          </NoContentHeading>
         ) : (
           <ul>
             {profile.follows.map((user) => (
