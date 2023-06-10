@@ -41,7 +41,7 @@ export function LinkOverlay({
         `}
       </style>
       <div className={`outer ${className}`}>
-        <Link href={href} className="overlay"></Link>
+        <Link href={href} className="overlay" aria-label="Opens detail tweet view"></Link>
         <div className="inner">{children}</div>
       </div>
     </>

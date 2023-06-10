@@ -48,7 +48,7 @@ export function TweetCard({
   });
 
   return (
-    <li className="flex gap-4 border-b p-4">
+    <div className="flex gap-4 border-b p-4">
       <Link href={`/profiles/${user.id}`}>
         <ProfileImage src={user.image} />
       </Link>
@@ -112,7 +112,7 @@ export function TweetCard({
           likeCount={likeCount}
         />
       </div>
-    </li>
+    </div>
   );
 
   function handleToggleLike() {

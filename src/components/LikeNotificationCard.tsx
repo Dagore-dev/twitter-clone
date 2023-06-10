@@ -6,7 +6,7 @@ import { LinkOverlay } from "./LinkOverlay";
 
 export function LikeNotificationCard({ notifier, read, tweet }: Notification) {
   return (
-    <li className="last:pb-96">
+    <div className="last:pb-96">
       <LinkOverlay href={`/tweets/${tweet.id}`} isDetail={false}>
         <div className="flex">
           <VscHeartFilled className="m-3 h-9 w-9 fill-red-500" />
@@ -26,6 +26,6 @@ export function LikeNotificationCard({ notifier, read, tweet }: Notification) {
           </div>
         </div>
       </LinkOverlay>
-    </li>
+    </div>
   );
 }
