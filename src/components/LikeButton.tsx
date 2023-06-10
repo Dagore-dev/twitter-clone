@@ -29,6 +29,7 @@ export function LikeButton({
 
   return (
     <button
+      aria-label="Like"
       disabled={isLoading}
       onClick={onClick}
       className={`group -ml-2 flex items-center gap-1 self-start transition-colors duration-200

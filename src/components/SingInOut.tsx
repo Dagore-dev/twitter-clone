@@ -10,7 +10,7 @@ export function SingInOut() {
     <>
       {user != null ? (
         <li>
-          <button onClick={() => void signOut()}>
+          <button aria-label="Sign out" onClick={() => void signOut()}>
             <IconHoverEffect red>
               <span className="flex items-center gap-4">
                 <VscSignOut className="h-8 w-8 fill-red-700" />
@@ -23,7 +23,7 @@ export function SingInOut() {
         </li>
       ) : (
         <li>
-          <button onClick={() => void signIn()}>
+          <button aria-label="Sign in" onClick={() => void signIn()}>
             <IconHoverEffect red={false}>
               <span className="flex items-center gap-4">
                 <VscSignIn className="h-8 w-8 fill-green-700" />

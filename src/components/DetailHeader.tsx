@@ -15,7 +15,7 @@ export function DetailHeader({
   const sharedClasses = "flex items-center border-b bg-white px-4 py-2";
   const content = (
     <>
-      <button onClick={() => router.back()} className="mr-2">
+      <button aria-label="Back" onClick={() => router.back()} className="mr-2">
         <IconHoverEffect red={false}>
           <VscArrowLeft className="h-6 w-6" />
         </IconHoverEffect>
