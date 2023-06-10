@@ -81,6 +81,7 @@ export function TweetCard({
                   loading="lazy"
                   width={400}
                   height={400}
+                  aria-label="Opens image in new tab"
                 />
               </Link>
             </div>
@@ -96,6 +97,7 @@ export function TweetCard({
                   loading="lazy"
                   width={image.width}
                   height={image.height}
+                  aria-label="Opens image in new tab"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </Link>
