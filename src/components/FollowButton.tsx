@@ -13,7 +13,13 @@ export function FollowButton({ isFollowing, isLoading, onClick }: Props) {
   if (session.status !== "authenticated") return null;
 
   return (
-    <Button disabled={isLoading} onClick={onClick} small gray={isFollowing}>
+    <Button
+      aria-label={isFollowing ? "Unfollow" : "Follow"}
+      disabled={isLoading}
+      onClick={onClick}
+      small
+      gray={isFollowing}
+    >
       {isFollowing ? "Unfollow" : "Follow"}
     </Button>
   );

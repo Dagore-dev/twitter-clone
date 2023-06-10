@@ -13,7 +13,7 @@ export function SideNavItem({
 }) {
   return (
     <li>
-      <Link href={href}>
+      <Link href={href} aria-label={name}>
         <IconHoverEffect red={false}>
           <span className="flex items-center gap-4">
             <Icon className="h-8 w-8" />

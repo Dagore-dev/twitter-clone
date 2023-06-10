@@ -26,17 +26,15 @@ export function InfiniteNotificationsList({
   }
 
   return (
-    <ul>
-      <InfiniteScroll
-        dataLength={notifications.length}
-        next={fetchNewTweets}
-        hasMore={hasMore}
-        loader={<LoadingSpinner />}
-      >
-        {notifications.map((notification) => (
-          <LikeNotificationCard key={notification.id} {...notification} />
-        ))}
-      </InfiniteScroll>
-    </ul>
+    <InfiniteScroll
+      dataLength={notifications.length}
+      next={fetchNewTweets}
+      hasMore={hasMore}
+      loader={<LoadingSpinner />}
+    >
+      {notifications.map((notification) => (
+        <LikeNotificationCard key={notification.id} {...notification} />
+      ))}
+    </InfiniteScroll>
   );
 }

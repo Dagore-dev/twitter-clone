@@ -26,17 +26,15 @@ export function InfiniteTweetList({
   }
 
   return (
-    <ul>
-      <InfiniteScroll
-        dataLength={tweets.length}
-        next={fetchNewTweets}
-        hasMore={hasMore}
-        loader={<LoadingSpinner />}
-      >
-        {tweets.map((tweet) => (
-          <TweetCard key={tweet.id} {...tweet} />
-        ))}
-      </InfiniteScroll>
-    </ul>
+    <InfiniteScroll
+      dataLength={tweets.length}
+      next={fetchNewTweets}
+      hasMore={hasMore}
+      loader={<LoadingSpinner />}
+    >
+      {tweets.map((tweet) => (
+        <TweetCard key={tweet.id} {...tweet} />
+      ))}
+    </InfiniteScroll>
   );
 }

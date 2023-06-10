@@ -48,7 +48,7 @@ export function TweetCard({
   });
 
   return (
-    <li className="flex gap-4 border-b p-4">
+    <div className="flex gap-4 border-b p-4">
       <Link href={`/profiles/${user.id}`}>
         <ProfileImage src={user.image} />
       </Link>
@@ -70,6 +70,7 @@ export function TweetCard({
         <LinkOverlay href={`/tweets/${id}`} isDetail={isDetail ?? false}>
           <p className="whitespace-pre-wrap">{content}</p>
 
+          {/* Legacy imageUrl support */}
           {imageUrl && (
             <div className="p-5">
               <Link href={imageUrl} target="_blank">
@@ -80,6 +81,7 @@ export function TweetCard({
                   loading="lazy"
                   width={400}
                   height={400}
+                  aria-label="Opens image in new tab"
                 />
               </Link>
             </div>
@@ -95,6 +97,8 @@ export function TweetCard({
                   loading="lazy"
                   width={image.width}
                   height={image.height}
+                  aria-label="Opens image in new tab"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </Link>
             </div>
@@ -108,7 +112,7 @@ export function TweetCard({
           likeCount={likeCount}
         />
       </div>
-    </li>
+    </div>
   );
 
   function handleToggleLike() {

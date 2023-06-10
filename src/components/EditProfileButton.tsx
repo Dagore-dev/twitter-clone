@@ -10,7 +10,11 @@ export function EditProfileButton({ userId }: { userId: string }) {
     return null;
 
   return (
-    <Button onClick={() => void router.push(`/profiles/edit/${userId}`)} small>
+    <Button
+      aria-label="Edit profile"
+      onClick={() => void router.push(`/profiles/edit/${userId}`)}
+      small
+    >
       Edit profile
     </Button>
   );

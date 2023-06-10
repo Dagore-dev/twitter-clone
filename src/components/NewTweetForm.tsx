@@ -106,6 +106,7 @@ function Form() {
         )}
         <ImageInput className={`py-2 ${imageSrc == null ? "" : "hidden"}`} />
         <Button
+          aria-label="Send tweet"
           className={`${imageSrc == null ? "" : "mt-4 self-end"}`}
           disabled={isLoading || createTweet.isLoading}
         >

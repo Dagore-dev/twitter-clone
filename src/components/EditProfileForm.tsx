@@ -57,6 +57,7 @@ export function EditProfileForm(props: {
       </div>
 
       <Button
+        aria-label="Submit"
         type="submit"
         disabled={loading || updateProfile.isLoading}
         className="m-3"

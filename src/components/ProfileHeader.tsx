@@ -60,6 +60,7 @@ export function ProfileHeader({
             width={1920}
             height={1200}
             alt="background"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src="https://res.cloudinary.com/dmhvmoqu2/image/upload/v1684694355/tweets/ahrsbbel0zllalpx7az4.jpg"
           />
         ) : (
@@ -68,6 +69,7 @@ export function ProfileHeader({
             width={profile.background.width}
             height={profile.background.height}
             alt="background"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={profile.background.secureUrl}
           />
         )}
