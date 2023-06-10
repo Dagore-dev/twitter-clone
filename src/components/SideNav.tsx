@@ -1,9 +1,5 @@
 import { useSession } from "next-auth/react";
-import {
-  VscAccount,
-  VscBell,
-  VscHome,
-} from "react-icons/vsc";
+import { VscAccount, VscBell, VscHome } from "react-icons/vsc";
 import { SideNavItem } from "./SideNavItem";
 import { SingInOut } from "./SingInOut";
 
