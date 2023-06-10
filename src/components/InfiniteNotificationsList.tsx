@@ -35,6 +35,6 @@ export function InfiniteNotificationsList({
       {notifications.map((notification) => (
         <LikeNotificationCard key={notification.id} {...notification} />
       ))}
-  </InfiniteScroll>
+    </InfiniteScroll>
   );
 }
