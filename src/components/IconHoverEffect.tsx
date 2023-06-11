@@ -12,7 +12,7 @@ export function IconHoverEffect({ children, red = false }: Props) {
 
   return (
     <div
-      className={`rounded-full p-2 transition-colors duration-200 ${colorClasses}`}
+      className={`rounded-full p-2 md:transition-colors md:duration-200 ${colorClasses}`}
     >
       {children}
     </div>

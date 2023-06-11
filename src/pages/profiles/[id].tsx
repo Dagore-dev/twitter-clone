@@ -7,9 +7,9 @@ import {
 import Head from "next/head";
 import { ssgHelper } from "~/server/api/ssgHelper";
 import { api } from "~/utils/api";
-import ErrorPage from "next/error";
 import { InfiniteTweetList } from "~/components/InfiniteTweetList";
 import { ProfileHeader } from "~/components/ProfileHeader";
+import Custom404 from "../404";
 
 const ProfilePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   id,
@@ -23,8 +23,7 @@ const ProfilePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
     }
   );
 
-  if (profile == null || profile.name == null)
-    return <ErrorPage statusCode={404} />;
+  if (profile == null || profile.name == null) return <Custom404 />;
 
   return (
     <>
