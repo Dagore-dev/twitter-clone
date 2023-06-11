@@ -17,8 +17,7 @@ const FollowersPage: NextPage<
 > = ({ id }) => {
   const { data: profile } = api.profile.getFollowersOf.useQuery({ userId: id });
 
-  if (profile == null || profile.name == null)
-    return <Custom404 />;
+  if (profile == null || profile.name == null) return <Custom404 />;
 
   return (
     <>

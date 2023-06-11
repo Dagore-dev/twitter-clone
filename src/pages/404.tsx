@@ -8,11 +8,9 @@ export default function Custom404() {
       <Head>
         <title>Error 404 - Page not found</title>
       </Head>
-      
+
       <DetailHeader text="Error" />
-      <NoContentHeading>
-      Error 404 - Page not found
-      </NoContentHeading>
+      <NoContentHeading>Error 404 - Page not found</NoContentHeading>
     </>
-  )
+  );
 }

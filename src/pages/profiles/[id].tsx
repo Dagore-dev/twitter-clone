@@ -23,8 +23,7 @@ const ProfilePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
     }
   );
 
-  if (profile == null || profile.name == null)
-    return <Custom404 />;
+  if (profile == null || profile.name == null) return <Custom404 />;
 
   return (
     <>

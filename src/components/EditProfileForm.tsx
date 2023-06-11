@@ -4,7 +4,10 @@ import { Button } from "./Button";
 import { LoadedImagePreview } from "./LoadedImagePreview";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
-import { cloudinaryEndpoint, cloudinaryTweetsPreset } from "~/utils/cloudinaryConfig";
+import {
+  cloudinaryEndpoint,
+  cloudinaryTweetsPreset,
+} from "~/utils/cloudinaryConfig";
 
 export function EditProfileForm(props: {
   bio: string;

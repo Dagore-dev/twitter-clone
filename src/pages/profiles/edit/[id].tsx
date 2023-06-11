@@ -19,7 +19,12 @@ const EditProfilePage: NextPage<
   const { data: profile } = api.profile.getById.useQuery({ id });
   const session = useSession();
 
-  if (profile == null || profile.name == null || session.status !== "authenticated" || session.data.user.id !== id)
+  if (
+    profile == null ||
+    profile.name == null ||
+    session.status !== "authenticated" ||
+    session.data.user.id !== id
+  )
     return <Custom404 />;
 
   return (

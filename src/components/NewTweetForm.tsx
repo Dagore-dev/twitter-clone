@@ -11,7 +11,10 @@ import {
 import { api } from "~/utils/api";
 import { ImageInput } from "./ImageInput";
 import { LoadedImagePreview } from "./LoadedImagePreview";
-import { cloudinaryEndpoint, cloudinaryTweetsPreset } from "~/utils/cloudinaryConfig";
+import {
+  cloudinaryEndpoint,
+  cloudinaryTweetsPreset,
+} from "~/utils/cloudinaryConfig";
 
 export function NewTweetForm() {
   const session = useSession();
