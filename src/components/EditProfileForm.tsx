@@ -4,6 +4,7 @@ import { Button } from "./Button";
 import { LoadedImagePreview } from "./LoadedImagePreview";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
+import { cloudinaryEndpoint, cloudinaryTweetsPreset } from "~/utils/cloudinaryConfig";
 
 export function EditProfileForm(props: {
   bio: string;
@@ -108,12 +109,12 @@ export function EditProfileForm(props: {
     for (const file of files) {
       formData.append("file", file);
     }
-    formData.append("upload_preset", "tweets_images");
+    formData.append("upload_preset", cloudinaryTweetsPreset);
     const altText = (
       document.getElementById("altText") as HTMLInputElement | undefined
     )?.value;
 
-    fetch("https://api.cloudinary.com/v1_1/dmhvmoqu2/image/upload", {
+    fetch(cloudinaryEndpoint, {
       method: "POST",
       body: formData,
     })

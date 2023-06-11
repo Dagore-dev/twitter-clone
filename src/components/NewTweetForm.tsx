@@ -11,6 +11,7 @@ import {
 import { api } from "~/utils/api";
 import { ImageInput } from "./ImageInput";
 import { LoadedImagePreview } from "./LoadedImagePreview";
+import { cloudinaryEndpoint, cloudinaryTweetsPreset } from "~/utils/cloudinaryConfig";
 
 export function NewTweetForm() {
   const session = useSession();
@@ -152,12 +153,12 @@ function Form() {
     for (const file of files) {
       formData.append("file", file);
     }
-    formData.append("upload_preset", "tweets_images");
+    formData.append("upload_preset", cloudinaryTweetsPreset);
     const altText = (
       document.getElementById("altText") as HTMLInputElement | undefined
     )?.value;
 
-    fetch("https://api.cloudinary.com/v1_1/dmhvmoqu2/image/upload", {
+    fetch(cloudinaryEndpoint, {
       method: "POST",
       body: formData,
     })
