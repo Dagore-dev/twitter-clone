@@ -8,9 +8,9 @@ import Head from "next/head";
 import { DetailHeader } from "~/components/DetailHeader";
 import { ssgHelper } from "~/server/api/ssgHelper";
 import { api } from "~/utils/api";
-import ErrorPage from "next/error";
 import { UserCard } from "~/components/UserCard";
 import { NoContentHeading } from "~/components/NoContentHeading";
+import Custom404 from "~/pages/404";
 
 const FollowersPage: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -18,7 +18,7 @@ const FollowersPage: NextPage<
   const { data: profile } = api.profile.getFollowedBy.useQuery({ userId: id });
 
   if (profile == null || profile.name == null)
-    return <ErrorPage statusCode={404} />;
+    return <Custom404 />;
 
   return (
     <>

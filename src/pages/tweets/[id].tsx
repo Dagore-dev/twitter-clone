@@ -5,17 +5,17 @@ import {
   type NextPage,
 } from "next";
 import { api } from "~/utils/api";
-import ErrorPage from "next/error";
 import { TweetCard } from "~/components/TweetCard";
 import { ssgHelper } from "~/server/api/ssgHelper";
 import { DetailHeader } from "~/components/DetailHeader";
+import Custom404 from "../404";
 
 const TweetDetails: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
 > = ({ id }) => {
   const { data: tweet } = api.tweet.getById.useQuery({ id });
   if (tweet == null) {
-    return <ErrorPage statusCode={404} />;
+    return <Custom404 />;
   }
 
   return (
