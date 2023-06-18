@@ -16,8 +16,7 @@ const NotificationsPage: NextPage = () => {
 
       <DetailHeader text="Notifications" />
 
-      <main>
-        {session.status === "authenticated" ? (
+      {session.status === "authenticated" ? (
           <RecentNotifications />
         ) : (
           <NoContentHeading>
@@ -29,8 +28,7 @@ const NotificationsPage: NextPage = () => {
               Log in
             </strong>
           </NoContentHeading>
-        )}
-      </main>
+      )}
     </>
   );
 };
