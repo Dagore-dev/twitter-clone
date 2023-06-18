@@ -9,6 +9,7 @@ import { TweetCard } from "~/components/TweetCard";
 import { ssgHelper } from "~/server/api/ssgHelper";
 import { DetailHeader } from "~/components/DetailHeader";
 import Custom404 from "../404";
+import Head from "next/head";
 
 const TweetDetails: NextPage<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -17,9 +18,19 @@ const TweetDetails: NextPage<
   if (tweet == null) {
     return <Custom404 />;
   }
-
   return (
     <>
+      <Head>
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content={`Tweet of ${tweet.user?.name ?? "User"}`}
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta property="og:description" content={tweet.content} />
+        {/* TODO: Images are not shown in preview */}
+        <meta property="og:image" content={tweet.user?.image ?? ""} />
+      </Head>
       <DetailHeader text="Tweet" />
       <ul>
         <TweetCard
