@@ -17,17 +17,17 @@ const NotificationsPage: NextPage = () => {
       <DetailHeader text="Notifications" />
 
       {session.status === "authenticated" ? (
-          <RecentNotifications />
-        ) : (
-          <NoContentHeading>
-            Seems that your are not authenticated. Try to&nbsp;
-            <strong
-              onClick={() => void signIn()}
-              className="cursor-pointer md:hover:underline"
-            >
-              Log in
-            </strong>
-          </NoContentHeading>
+        <RecentNotifications />
+      ) : (
+        <NoContentHeading>
+          Seems that your are not authenticated. Try to&nbsp;
+          <strong
+            onClick={() => void signIn()}
+            className="cursor-pointer md:hover:underline"
+          >
+            Log in
+          </strong>
+        </NoContentHeading>
       )}
     </>
   );

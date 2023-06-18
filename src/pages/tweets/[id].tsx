@@ -22,14 +22,14 @@ const TweetDetails: NextPage<
     <>
       <Head>
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={`Tweet of ${tweet.user?.name ?? 'User'}`} />
-        <meta name="twitter:card" content="summary" />
         <meta
-          property="og:description"
-          content={tweet.content}
+          property="og:title"
+          content={`Tweet of ${tweet.user?.name ?? "User"}`}
         />
+        <meta name="twitter:card" content="summary" />
+        <meta property="og:description" content={tweet.content} />
         {/* TODO: Images are not shown in preview */}
-        <meta property="og:image" content={tweet.user?.image ?? ''} />
+        <meta property="og:image" content={tweet.user?.image ?? ""} />
       </Head>
       <DetailHeader text="Tweet" />
       <ul>
