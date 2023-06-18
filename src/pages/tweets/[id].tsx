@@ -21,15 +21,15 @@ const TweetDetails: NextPage<
   return (
     <>
       <Head>
-        <meta property="og:url" content="your url" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={`${tweet.user?.name ?? 'User'}'s tweet`} />
+        <meta property="og:title" content={`Tweet of ${tweet.user?.name ?? 'User'}`} />
         <meta name="twitter:card" content="summary" />
         <meta
           property="og:description"
-          content="Hurray!! Yes Social Media Preview is Working"
+          content={tweet.content}
         />
-        <meta property="og:image" content={tweet.image?.secureUrl} />
+        {/* TODO: Images are not shown in preview */}
+        <meta property="og:image" content={tweet.user?.image ?? ''} />
       </Head>
       <DetailHeader text="Tweet" />
       <ul>
