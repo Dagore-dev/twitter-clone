@@ -29,6 +29,11 @@ const ProfilePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
     <>
       <Head>
         <title>{`Twitter clone / ${profile.name}`}</title>
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`Profile of ${profile.name}`} />
+        <meta name="twitter:card" content="summary" />
+        <meta property="og:description" content={profile.bio} />
+        <meta property="og:image" content={profile.image ?? ""} />
       </Head>
       <ProfileHeader id={id} profile={profile} />
       <main>

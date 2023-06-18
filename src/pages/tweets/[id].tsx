@@ -28,7 +28,6 @@ const TweetDetails: NextPage<
         />
         <meta name="twitter:card" content="summary" />
         <meta property="og:description" content={tweet.content} />
-        {/* TODO: Images are not shown in preview */}
         <meta property="og:image" content={tweet.user?.image ?? ""} />
       </Head>
       <DetailHeader text="Tweet" />
