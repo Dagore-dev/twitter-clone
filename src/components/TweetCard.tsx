@@ -7,6 +7,8 @@ import { api } from "~/utils/api";
 import { type FeedData } from "~/interfaces/FeedData";
 import Image from "next/image";
 import { LinkOverlay } from "./LinkOverlay";
+import { Anchorme } from "react-anchorme";
+import { AnchormeLink } from "./AnchormeLink";
 
 export function TweetCard({
   id,
@@ -68,7 +70,15 @@ export function TweetCard({
         </div>
 
         <LinkOverlay href={`/tweets/${id}`} isDetail={isDetail ?? false}>
-          <p className="whitespace-pre-wrap">{content}</p>
+          <p className="whitespace-pre-wrap">
+            <Anchorme
+              target="_blank"
+              rel="noreferrer noopener"
+              linkComponent={AnchormeLink}
+            >
+              {content}
+            </Anchorme>
+          </p>
 
           {/* Legacy imageUrl support */}
           {imageUrl && (
