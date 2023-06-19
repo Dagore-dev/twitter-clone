@@ -34,7 +34,15 @@ export function EditProfileForm(props: {
           placeholder="Welcome to my Profile"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
+          aria-invalid={bio.length > 191}
+          aria-errormessage="bioTooLong"
         />
+        <span
+          id="bioTooLong"
+          className={`${bio.length < 191 ? "hidden" : ""} my-2 text-red-600`}
+        >
+          Maximum of 191 characters
+        </span>
       </div>
       <div className="mx-3 mb-6">
         <label htmlFor="img" className="mb-2 block">
@@ -89,7 +97,7 @@ export function EditProfileForm(props: {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (loading || updateProfile.isLoading) return;
+    if (loading || updateProfile.isLoading || bio.length > 191) return;
 
     setIsLoading(true);
     const form = e.currentTarget as HTMLFormElement;
