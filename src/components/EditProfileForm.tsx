@@ -8,10 +8,12 @@ import {
   cloudinaryEndpoint,
   cloudinaryTweetsPreset,
 } from "~/utils/cloudinaryConfig";
+import { useRouter } from "next/router";
 
 export function EditProfileForm(props: {
   bio: string;
   background: Image | null;
+  profileLink: string;
 }) {
   const session = useSession();
   const [bio, setBio] = useState(props.bio);
@@ -19,6 +21,7 @@ export function EditProfileForm(props: {
     props.background?.secureUrl
   );
   const [loading, setIsLoading] = useState(false);
+  const router = useRouter();
   const updateProfile = api.profile.updateProfile.useMutation();
 
   return (
@@ -34,7 +37,15 @@ export function EditProfileForm(props: {
           placeholder="Welcome to my Profile"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
+          aria-invalid={bio.length > 191}
+          aria-errormessage="bioTooLong"
         />
+        <span
+          id="bioTooLong"
+          className={`${bio.length < 191 ? "hidden" : ""} my-2 text-red-600`}
+        >
+          Maximum of 191 characters
+        </span>
       </div>
       <div className="mx-3 mb-6">
         <label htmlFor="img" className="mb-2 block">
@@ -89,7 +100,16 @@ export function EditProfileForm(props: {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (loading || updateProfile.isLoading) return;
+    const altText = (
+      document.getElementById("altText") as HTMLInputElement | undefined
+    )?.value;
+    if (
+      loading ||
+      updateProfile.isLoading ||
+      bio.length > 191 ||
+      (altText && altText.length > 191)
+    )
+      return;
 
     setIsLoading(true);
     const form = e.currentTarget as HTMLFormElement;
@@ -98,12 +118,23 @@ export function EditProfileForm(props: {
     ) as HTMLInputElement;
     const files = fileInput?.files;
     if (files == null || files?.length === 0) {
-      bio.trim().length !== 0 &&
-        updateProfile.mutate({
-          userId: session.data?.user.id ?? "",
-          bio,
-          background: undefined,
-        });
+      if (bio.trim().length !== 0) {
+        if (props.background && imageSrc != null) {
+          updateProfile.mutate({
+            userId: session.data?.user.id ?? "",
+            bio,
+            background: props.background,
+          });
+        } else {
+          updateProfile.mutate({
+            userId: session.data?.user.id ?? "",
+            bio,
+            background: undefined,
+          });
+        }
+        void router.push(props.profileLink);
+      }
+
       setIsLoading(false);
       return;
     }
@@ -113,9 +144,6 @@ export function EditProfileForm(props: {
       formData.append("file", file);
     }
     formData.append("upload_preset", cloudinaryTweetsPreset);
-    const altText = (
-      document.getElementById("altText") as HTMLInputElement | undefined
-    )?.value;
 
     fetch(cloudinaryEndpoint, {
       method: "POST",
@@ -143,6 +171,7 @@ export function EditProfileForm(props: {
         setImageSrc(undefined);
         setIsLoading(false);
         form.reset();
+        void router.push(props.profileLink);
       });
   }
 }

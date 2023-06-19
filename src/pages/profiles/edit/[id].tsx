@@ -34,7 +34,11 @@ const EditProfilePage: NextPage<
       </Head>
       <DetailHeader text="Edit profile" />
       <main>
-        <EditProfileForm background={profile.background} bio={profile.bio} />
+        <EditProfileForm
+          background={profile.background}
+          bio={profile.bio}
+          profileLink={`/profiles/${id}`}
+        />
       </main>
     </>
   );

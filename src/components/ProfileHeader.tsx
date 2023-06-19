@@ -8,6 +8,8 @@ import Image from "next/image";
 import { EditProfileButton } from "./EditProfileButton";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { Anchorme } from "react-anchorme";
+import { AnchormeLink } from "./AnchormeLink";
 
 export function ProfileHeader({
   id,
@@ -84,9 +86,17 @@ export function ProfileHeader({
             <h1 className="text-lg font-bold">{profile?.name}</h1>
             <div>
               <p className="relative">
-                {profile.bio.length === 0
-                  ? "Welcome to my profile!"
-                  : profile.bio}
+                {profile.bio.length === 0 ? (
+                  "Welcome to my profile!"
+                ) : (
+                  <Anchorme
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    linkComponent={AnchormeLink}
+                  >
+                    {profile.bio}
+                  </Anchorme>
+                )}
               </p>
               <span className="text-gray-500">
                 <Link href={`/profiles/followers/${id}`}>
