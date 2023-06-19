@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { VscChromeClose } from "react-icons/vsc";
 
 export function LoadedImagePreview({
@@ -12,6 +12,8 @@ export function LoadedImagePreview({
   loading: boolean;
   className?: string;
 }) {
+  const [altText, setAltText] = useState("");
+
   return (
     <div className={`mt-8 max-w-[250px] md:max-w-xs ${className ?? ""}`}>
       {!loading && (
@@ -38,7 +40,19 @@ export function LoadedImagePreview({
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
           placeholder="Alternative text"
           readOnly={loading}
+          value={altText}
+          onChange={(e) => setAltText(e.target.value)}
+          aria-invalid={altText.length > 191}
+          aria-errormessage="altTooLong"
         />
+        <span
+          id="altTooLong"
+          className={`${
+            altText.length < 191 ? "hidden" : ""
+          } my-2 text-red-600`}
+        >
+          Maximum of 191 characters
+        </span>
       </div>
     </div>
   );

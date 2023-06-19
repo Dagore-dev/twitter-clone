@@ -97,7 +97,16 @@ export function EditProfileForm(props: {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (loading || updateProfile.isLoading || bio.length > 191) return;
+    const altText = (
+      document.getElementById("altText") as HTMLInputElement | undefined
+    )?.value;
+    if (
+      loading ||
+      updateProfile.isLoading ||
+      bio.length > 191 ||
+      (altText && altText.length > 191)
+    )
+      return;
 
     setIsLoading(true);
     const form = e.currentTarget as HTMLFormElement;
@@ -121,9 +130,6 @@ export function EditProfileForm(props: {
       formData.append("file", file);
     }
     formData.append("upload_preset", cloudinaryTweetsPreset);
-    const altText = (
-      document.getElementById("altText") as HTMLInputElement | undefined
-    )?.value;
 
     fetch(cloudinaryEndpoint, {
       method: "POST",
