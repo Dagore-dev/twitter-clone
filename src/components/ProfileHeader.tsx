@@ -85,7 +85,7 @@ export function ProfileHeader({
           <div className="ml-2 flex-grow">
             <h1 className="text-lg font-bold">{profile?.name}</h1>
             <div>
-              <p className="relative">
+              <p className="relative break-words">
                 {profile.bio.length === 0 ? (
                   "Welcome to my profile!"
                 ) : (
