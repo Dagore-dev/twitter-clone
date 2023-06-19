@@ -80,7 +80,7 @@ function Form() {
       onChange={handleChange}
       className="flex flex-col gap-2 border-b px-4 py-2"
     >
-      <div className="flex gap-4">
+      <div className="relative flex gap-4">
         <ProfileImage src={profileImage} />
         <textarea
           name="draft"
@@ -92,6 +92,8 @@ function Form() {
           onChange={(e) => setInput(e.target.value)}
           readOnly={isLoading || createTweet.isLoading}
           ref={inputRef}
+          aria-invalid={input.length > 191}
+          aria-errormessage="charCount"
         />
       </div>
 
@@ -109,13 +111,24 @@ function Form() {
           />
         )}
         <ImageInput className={`py-2 ${imageSrc == null ? "" : "hidden"}`} />
-        <Button
-          aria-label="Send tweet"
-          className={`${imageSrc == null ? "" : "mt-4 self-end"}`}
-          disabled={isLoading || createTweet.isLoading}
-        >
-          Tweet
-        </Button>
+
+        <div className={`${imageSrc == null ? "" : "mt-4 self-end"}`}>
+          <span
+            id="charCount"
+            className={`p-2 font-bold ${
+              input.length < 191 ? "text-yellow-400" : "text-red-600"
+            }`}
+          >
+            {input.length < 175 ? "" : `${input.length}/191`}
+          </span>
+
+          <Button
+            aria-label="Send tweet"
+            disabled={isLoading || createTweet.isLoading}
+          >
+            Tweet
+          </Button>
+        </div>
       </div>
     </form>
   );
@@ -138,7 +151,7 @@ function Form() {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (isLoading || createTweet.isLoading) return;
+    if (isLoading || createTweet.isLoading || input.length > 191) return;
 
     setIsLoading(true);
     const form = e.currentTarget as HTMLFormElement;
