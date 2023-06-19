@@ -14,6 +14,7 @@ export function EditProfileButton({ userId }: { userId: string }) {
       aria-label="Edit profile"
       onClick={() => void router.push(`/profiles/edit/${userId}`)}
       small
+      className="min-w-fit"
     >
       Edit profile
     </Button>

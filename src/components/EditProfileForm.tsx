@@ -8,10 +8,12 @@ import {
   cloudinaryEndpoint,
   cloudinaryTweetsPreset,
 } from "~/utils/cloudinaryConfig";
+import { useRouter } from "next/router";
 
 export function EditProfileForm(props: {
   bio: string;
   background: Image | null;
+  profileLink: string;
 }) {
   const session = useSession();
   const [bio, setBio] = useState(props.bio);
@@ -19,6 +21,7 @@ export function EditProfileForm(props: {
     props.background?.secureUrl
   );
   const [loading, setIsLoading] = useState(false);
+  const router = useRouter();
   const updateProfile = api.profile.updateProfile.useMutation();
 
   return (
@@ -115,12 +118,23 @@ export function EditProfileForm(props: {
     ) as HTMLInputElement;
     const files = fileInput?.files;
     if (files == null || files?.length === 0) {
-      bio.trim().length !== 0 &&
-        updateProfile.mutate({
-          userId: session.data?.user.id ?? "",
-          bio,
-          background: undefined,
-        });
+      if (bio.trim().length !== 0) {
+        if (props.background && imageSrc != null) {
+          updateProfile.mutate({
+            userId: session.data?.user.id ?? "",
+            bio,
+            background: props.background,
+          });
+        } else {
+          updateProfile.mutate({
+            userId: session.data?.user.id ?? "",
+            bio,
+            background: undefined,
+          });
+        }
+        void router.push(props.profileLink);
+      }
+
       setIsLoading(false);
       return;
     }
@@ -157,6 +171,7 @@ export function EditProfileForm(props: {
         setImageSrc(undefined);
         setIsLoading(false);
         form.reset();
+        void router.push(props.profileLink);
       });
   }
 }
